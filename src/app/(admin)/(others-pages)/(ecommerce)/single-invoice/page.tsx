@@ -4,9 +4,9 @@ import React from "react";
 
 export const metadata: Metadata = {
   title:
-    "Next.js E-commerce Single Invoice | TailAdmin - Next.js Dashboard Template",
+    "Next.js E-commerce Single Invoice | Precision Admin - Next.js Dashboard Template",
   description:
-    "This is Next.js E-commerce  Single Invoice TailAdmin Dashboard Template",
+    "This is Next.js E-commerce  Single Invoice Precision Admin Dashboard Template",
 };
 
 export default function SingleInvoicePage() {

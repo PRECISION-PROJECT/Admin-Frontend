@@ -1,193 +1,231 @@
-# TailAdmin Pro - Next.js (v2.2)
+# Precision Admin Frontend
 
-[TailAdmin](https://tailadmin.com) is a modern, responsive, and customizable admin dashboard template built using
-Tailwind CSS and Next.js. It is designed to help developers build beautiful and functional dashboards quickly and
-easily.
+A comprehensive, modern admin dashboard built with Next.js 15, featuring advanced analytics, AI tools, e-commerce management, and enterprise-grade components.
 
-## Quick Links
+## 🚀 Tech Stack
 
-- [✨ Visit Website](https://tailadmin.com)
-- [📄 Documentation](https://tailadmin.com/docs)
-- [⬇️ Download](https://tailadmin.com/download)
-- [🌐 Live Site](https://nextjs-demo.tailadmin.com)
+### Core Framework
+- **Next.js 15.4.3** - React framework with App Router
+- **React 19** - Latest React with concurrent features
+- **TypeScript 5** - Type-safe development
 
-## Installation
+### UI & Styling
+- **Tailwind CSS 4.0** - Utility-first CSS framework
+- **ApexCharts** - Advanced data visualization
+- **React Hook Form** - Form handling with validation
+- **Flatpickr** - Date picker component
 
-### Prerequisites
+### State Management & Data
+- **Zustand** - Lightweight state management
+- **TanStack Query** - Server state management
+- **Axios** - HTTP client
 
-To get started with TailAdmin, ensure you have the following prerequisites installed and set up:
+### Advanced Features
+- **FullCalendar** - Calendar integration
+- **React DnD** - Drag and drop functionality
+- **React Dropzone** - File upload handling
+- **Swiper** - Touch slider component
+- **SimpleBar** - Custom scrollbars
+- **PrismJS** - Code syntax highlighting
 
-- Node.js 18.x or later (recommended to use Node.js 20.x or later)
+### Development Tools
+- **ESLint** - Code linting
+- **SVGR** - SVG as React components
+- **PostCSS** - CSS processing
 
-### Getting Started
+## 📋 Prerequisites
 
-1. Install dependencies:
+- **Node.js** >= 18 (recommended 20.x or later)
+- **npm** or **yarn** package manager
+
+## 🛠️ Getting Started
+
+### 1. Clone & Install
 
    ```bash
+# Clone the repository
+git clone <repository-url>
+cd Admin-Frontend
+
+# Install dependencies
    npm install
    # or
    yarn install
-   ```
 
-   > Use `--legacy-peer-deps` flag if you face peer-dependency error during installation.
+# Use --legacy-peer-deps if you encounter peer dependency issues
+npm install --legacy-peer-deps
+```
 
-2. Start the development server:
+### 2. Environment Configuration
+
+Create a `.env.local` file in the root directory:
+
+```env
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+NEXT_PUBLIC_API_URL=http://localhost:8000
+```
+
+### 3. Development
+
    ```bash
+# Start development server
    npm run dev
    # or
    yarn dev
-   ```
 
-## Changelog
+# Open http://localhost:3000
+```
 
-### Version 2.2.0 - [July 30, 2025]
+## 📜 Available Scripts
 
-* Fixed reported minor bugs and UI issues
-* Updated packages
-#### 🧭 **Logistics Dashboard** – *Added*
+```bash
+# Development
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run start        # Start production server
+npm run lint         # Run ESLint
+```
 
-* Redesigned logistics dashboard interface
-* Delivery activity table
-* Delivery tracking timeline
-* Total revenue earned chart
+## 🏗️ Project Structure
 
-#### 🛍️ **E-commerce Pages** – *Added*
+```
+src/
+├── app/                    # Next.js App Router pages
+│   ├── (admin)/           # Admin dashboard pages
+│   │   ├── (home)/        # Dashboard home pages
+│   │   ├── (others-pages)/ # Additional pages
+│   │   └── (ui-elements)/ # UI component examples
+│   └── (full-width-pages)/ # Full-width layouts
+├── components/            # Reusable components
+│   ├── ai/               # AI assistant components
+│   ├── analytics/        # Analytics dashboard
+│   ├── charts/           # Chart components
+│   ├── ecommerce/        # E-commerce components
+│   ├── form/             # Form components
+│   ├── ui/               # Base UI components
+│   └── ...               # Feature-specific components
+├── context/              # React contexts
+├── hooks/                # Custom React hooks
+├── layout/               # Layout components
+├── icons/                # SVG icons
+└── utils/                # Utility functions
+```
 
-* **Products**:
+## 🎯 Key Features
 
-  * Product list table
-  * Add product form
-* **Invoices**:
+### 📊 **Analytics Dashboard**
+- Real-time metrics and KPIs
+- Interactive charts and graphs
+- Data visualization with ApexCharts
+- Customizable dashboard widgets
 
-  * Invoice list table
-  * Single invoice view
-  * View invoice modal
-  * Create invoice form
-* **Transactions**:
+### 🧠 **AI Assistant Suite**
+- **Text Generator** - AI-powered content creation
+- **Image Generator** - AI image generation tools
+- **Code Generator** - AI code assistance
+- **Video Generator** - AI video creation tools
 
-  * Transaction list table
-  * Single transaction detail view
+### 🛍️ **E-commerce Management**
+- Product catalog management
+- Order processing and tracking
+- Invoice generation and management
+- Transaction monitoring
+- Customer relationship management
 
-#### 🧠 **AI Assistant Suite (New App Example)** – *Newly Added*
+### 📈 **Business Intelligence**
+- **Analytics Dashboard** - Comprehensive business metrics
+- **CRM Dashboard** - Customer relationship management
+- **Logistics Dashboard** - Supply chain management
+- **Marketing Dashboard** - Campaign analytics
+- **SaaS Dashboard** - Software metrics
+- **Stocks Dashboard** - Financial tracking
 
-* Text generator
-* Image generator
-* Code generator
-* Video generator
+### 🔧 **Advanced Components**
+- **Calendar Integration** - FullCalendar implementation
+- **File Manager** - Drag & drop file handling
+- **Chat System** - Real-time messaging
+- **Task Management** - Kanban boards and task lists
+- **Email Client** - Inbox and email management
+- **Support System** - Ticket management
 
-#### 🔑 **API Key Management** – *Newly Added*
+### 🎨 **UI Components**
+- 70+ reusable UI components
+- Form elements with validation
+- Data tables with sorting/filtering
+- Modal dialogs and notifications
+- Progress bars and spinners
+- Charts and data visualization
 
-* API key dashboard
-* API key table view
-* Add API key modal
+## 🐳 Docker Deployment
 
-#### 🔌 **Integrations (Pages)** – *Newly Added*
+### Development with Docker Compose
 
-* Integration cards UI
-* Integration details modal
-* Add integration modal
-* Integration settings modal
-* Delete integration confirmation modal
+```bash
+# Build and run with Docker Compose
+docker-compose up --build
 
-### ⚙️ **Support (New App Example)** – *Newly Added*
+# Access the application at http://localhost:8080
+```
 
-* Support ticket list page
-* Support ticket reply interface
+### Production Build
 
-#### 📊 **Charts & Visuals** - *Imporoved*
+```bash
+# Build production image
+docker build -f docker/Dockerfile -t precision-admin .
 
-* New bar chart design added
+# Run container
+docker run -p 3000:3000 precision-admin
+```
 
-### Version 2.1.2 - [Jun 02, 2025]
+## 🎨 Theme & Customization
 
-#### Update Overview
+- **Dark/Light Mode** - Built-in theme switching
+- **Responsive Design** - Mobile-first approach
+- **Customizable Sidebar** - Collapsible navigation
+- **Tailwind CSS** - Utility-first styling
+- **Component Library** - Consistent design system
 
-- Basic Table 3 Dropdown (cropped) update
-- Popover and Tooltip component overflow (cropped) issue update
+## 🔧 Configuration
 
-### Version 2.1.1 - [March 25, 2025]
+- **`next.config.ts`** - Next.js configuration with SVG support
+- **`tailwind.config.js`** - Tailwind CSS configuration
+- **`tsconfig.json`** - TypeScript configuration
+- **`eslint.config.mjs`** - ESLint rules
 
-- Updated to Next v15.2.3 for [CVE-2025-29927](https://nextjs.org/blog/cve-2025-29927) concerns
-- Included overrides vectormaps for packages to prevent peer dependency errors during installation.
-- Migrated from react-flatpickr to flatpickr package for React 19 support
+## 🚀 Performance Features
 
-### Version 2.1.0 - [March 10, 2025]
+- **Next.js 15** - Latest framework optimizations
+- **App Router** - Modern routing system
+- **Server Components** - Optimized rendering
+- **Image Optimization** - Built-in image handling
+- **Code Splitting** - Automatic bundle optimization
 
-#### Update Overview
+## 📱 Responsive Design
 
-- Added new dashboard design for saas product.
-- New Metrics card
-- Product performance tab with charts
+- **Mobile-First** - Optimized for all devices
+- **Breakpoint System** - Tailwind CSS responsive utilities
+- **Touch-Friendly** - Mobile gesture support
+- **Adaptive Layout** - Dynamic sidebar behavior
 
-### Version 2.0.1 - [February 27, 2025]
+## 🔒 Security Features
 
-#### Update Overview
+- **Authentication** - Secure login system
+- **Route Protection** - Protected admin routes
+- **Form Validation** - Client and server-side validation
+- **CSRF Protection** - Built-in security measures
 
-- Upgraded to Tailwind CSS v4 for better performance and efficiency.
-- Updated class usage to match the latest syntax and features.
-- Replaced deprecated class and optimized styles.
+## 🤝 Contributing
 
-#### Next Steps
+1. Follow the existing code structure
+2. Use TypeScript for type safety
+3. Follow Tailwind CSS conventions
+4. Test responsive design
+5. Ensure accessibility compliance
 
-- Run npm install or yarn install to update dependencies.
-- Check for any style changes or compatibility issues.
-- Refer to the Tailwind CSS v4 [Migration Guide](https://tailwindcss.com/docs/upgrade-guide) on this release. if needed.
-- This update keeps the project up to date with the latest Tailwind improvements. 🚀
+## 📄 License
 
-### v2.0.0 (February 2025)
+This project is licensed under the MIT License.
 
-A major update focused on Next.js 15 implementation and comprehensive redesign.
+---
 
-#### Major Improvements
-
-- Complete redesign using Next.js 15 App Router and React Server Components
-- Enhanced user interface with Next.js-optimized components
-- Improved responsiveness and accessibility
-- New features including collapsible sidebar, chat screens, and calendar
-- Redesigned authentication using Next.js App Router and server actions
-- Updated data visualization using ApexCharts for React
-
-#### Breaking Changes
-
-- Migrated from Next.js 14 to Next.js 15
-- Chart components now use ApexCharts for React
-- Authentication flow updated to use Server Actions and middleware
-
-#### Breaking Changes
-
-- Migrated from Next.js 14 to Next.js 15
-- Chart components now use ApexCharts for React
-- Authentication flow updated to use Server Actions and middleware
-
-[Read more](https://tailadmin.com/docs/update-logs/nextjs) on this release.
-
-### v1.3.4 (July 01, 2024)
-
-- Fixed JSvectormap rendering issues
-
-### v1.3.3 (June 20, 2024)
-
-- Fixed build error related to Loader component
-
-### v1.3.2 (June 19, 2024)
-
-- Added ClickOutside component for dropdown menus
-- Refactored sidebar components
-- Updated Jsvectormap package
-
-### v1.3.1 (Feb 12, 2024)
-
-- Fixed layout naming consistency
-- Updated styles
-
-### v1.3.0 (Feb 05, 2024)
-
-- Upgraded to Next.js 14
-- Added Flatpickr integration
-- Improved form elements
-- Enhanced multiselect functionality
-- Added default layout component
-
-## License
-
-Refer to our [LICENSE](https://tailadmin.com/license) page for more information.
+Built with ❤️ using Next.js 15 and modern web technologies.

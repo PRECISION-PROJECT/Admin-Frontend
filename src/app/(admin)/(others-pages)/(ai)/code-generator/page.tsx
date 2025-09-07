@@ -6,9 +6,9 @@ import React from "react";
 
 export const metadata: Metadata = {
   title:
-    "Next.js AI Code Generator | TailAdmin - Next.js Admin Dashboard Template",
+    "Next.js AI Code Generator | Precision Admin - Next.js Admin Dashboard Template",
   description:
-    "This is Next.js AI Code Generator page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
+    "This is Next.js AI Code Generator page for Precision Admin - Next.js Tailwind CSS Admin Dashboard Template",
 };
 
 export default function CodeGeneratorPage() {
