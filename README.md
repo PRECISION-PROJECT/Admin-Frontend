@@ -1,190 +1,193 @@
-# Platform Frontend
+# TailAdmin Pro - Next.js (v2.2)
 
-A modern, scalable Next.js application built with TypeScript, featuring a comprehensive UI component system and robust development tooling.
+[TailAdmin](https://tailadmin.com) is a modern, responsive, and customizable admin dashboard template built using
+Tailwind CSS and Next.js. It is designed to help developers build beautiful and functional dashboards quickly and
+easily.
 
-## 🚀 Tech Stack
+## Quick Links
 
-### Core Framework
-- **Next.js 15** - React framework with App Router
-- **React 19** - Latest React with concurrent features
-- **TypeScript 5.9** - Type-safe development
+- [✨ Visit Website](https://tailadmin.com)
+- [📄 Documentation](https://tailadmin.com/docs)
+- [⬇️ Download](https://tailadmin.com/download)
+- [🌐 Live Site](https://nextjs-demo.tailadmin.com)
 
-### UI & Styling
-- **Tailwind CSS 4.1** - Utility-first CSS framework
-- **Radix UI** - Accessible, unstyled UI primitives
-- **shadcn/ui** - Beautiful, reusable components
-- **Lucide React** - Icon library
-- **next-themes** - Dark/light mode support
+## Installation
 
-### State Management & Data Fetching
-- **Zustand** - Lightweight state management
-- **TanStack Query** - Server state management
-- **React Hook Form** - Form handling with validation
+### Prerequisites
 
-### Development Tools
-- **Biome** - Fast linter and formatter
-- **Husky** - Git hooks
-- **lint-staged** - Pre-commit linting
-- **Commitlint** - Conventional commit messages
+To get started with TailAdmin, ensure you have the following prerequisites installed and set up:
 
-### Additional Libraries
-- **Axios** - HTTP client
-- **Socket.io Client** - Real-time communication
-- **date-fns & dayjs** - Date manipulation
-- **Sonner** - Toast notifications
-- **Embla Carousel** - Carousel component
-- **Vaul** - Drawer component
+- Node.js 18.x or later (recommended to use Node.js 20.x or later)
 
-## 📋 Prerequisites
+### Getting Started
 
-- **Node.js** >= 18
-- **pnpm** (recommended) or npm
-- **Git**
+1. Install dependencies:
 
-## 🛠️ Getting Started
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
 
-### 1. Environment Setup
+   > Use `--legacy-peer-deps` flag if you face peer-dependency error during installation.
 
-**For Windows users:**
-```bash
-git config --global core.eol lf
-git config --global core.autocrlf input
-```
+2. Start the development server:
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
 
-### 2. Clone & Install
+## Changelog
 
-```bash
-# Clone the repository
-git clone <repository-url>
-cd Platform-Frontend
+### Version 2.2.0 - [July 30, 2025]
 
-# Install dependencies
-pnpm install
-```
+* Fixed reported minor bugs and UI issues
+* Updated packages
+#### 🧭 **Logistics Dashboard** – *Added*
 
-### 3. Environment Configuration
+* Redesigned logistics dashboard interface
+* Delivery activity table
+* Delivery tracking timeline
+* Total revenue earned chart
 
-Create a `.env.local` file in the root directory:
+#### 🛍️ **E-commerce Pages** – *Added*
 
-```env
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-NEXT_PUBLIC_API_URL=http://localhost:8000
-```
+* **Products**:
 
-### 4. Development
+  * Product list table
+  * Add product form
+* **Invoices**:
 
-```bash
-# Start development server with Turbopack
-pnpm dev
+  * Invoice list table
+  * Single invoice view
+  * View invoice modal
+  * Create invoice form
+* **Transactions**:
 
-# Open http://localhost:3000
-```
+  * Transaction list table
+  * Single transaction detail view
 
-## 📜 Available Scripts
+#### 🧠 **AI Assistant Suite (New App Example)** – *Newly Added*
 
-```bash
-# Development
-pnpm dev          # Start development server with Turbopack
-pnpm build        # Build for production
-pnpm start        # Start production server
+* Text generator
+* Image generator
+* Code generator
+* Video generator
 
-# Code Quality
-pnpm lint         # Run Biome linter
-pnpm lint:fix     # Fix linting issues
-pnpm format:check # Check code formatting
-pnpm format:fix   # Fix formatting issues
-pnpm type-check   # Run TypeScript type checking
-```
+#### 🔑 **API Key Management** – *Newly Added*
 
-## 🏗️ Project Structure
+* API key dashboard
+* API key table view
+* Add API key modal
 
-```
-src/
-├── app/                 # Next.js App Router pages
-├── components/          # Reusable UI components
-│   ├── ui/             # shadcn/ui components
-│   ├── layouts/        # Layout components
-│   └── providers/      # Context providers
-├── hooks/              # Custom React hooks
-├── lib/                # Utility functions
-├── stores/             # Zustand stores
-├── types/              # TypeScript type definitions
-├── utils/              # Helper utilities
-├── styles/             # Global styles
-├── config/             # Configuration files
-├── assets/             # Static assets
-└── api/                # API utilities
-```
+#### 🔌 **Integrations (Pages)** – *Newly Added*
 
-## 🐳 Docker Deployment
+* Integration cards UI
+* Integration details modal
+* Add integration modal
+* Integration settings modal
+* Delete integration confirmation modal
 
-### Development with Docker Compose
+### ⚙️ **Support (New App Example)** – *Newly Added*
 
-```bash
-# Build and run with Docker Compose
-docker-compose up --build
+* Support ticket list page
+* Support ticket reply interface
 
-# Access the application at http://localhost:8080
-```
+#### 📊 **Charts & Visuals** - *Imporoved*
 
-### Production Build
+* New bar chart design added
 
-```bash
-# Build production image
-docker build -f docker/Dockerfile -t platform-frontend .
+### Version 2.1.2 - [Jun 02, 2025]
 
-# Run container
-docker run -p 3000:3000 platform-frontend
-```
+#### Update Overview
 
-## 🎨 UI Components
+- Basic Table 3 Dropdown (cropped) update
+- Popover and Tooltip component overflow (cropped) issue update
 
-This project uses **shadcn/ui** components with a custom design system. Components are located in `src/components/ui/` and can be easily customized through Tailwind CSS.
+### Version 2.1.1 - [March 25, 2025]
 
-### Adding New Components
+- Updated to Next v15.2.3 for [CVE-2025-29927](https://nextjs.org/blog/cve-2025-29927) concerns
+- Included overrides vectormaps for packages to prevent peer dependency errors during installation.
+- Migrated from react-flatpickr to flatpickr package for React 19 support
 
-```bash
-# Add a new shadcn/ui component
-pnpm dlx shadcn@latest add button
-```
+### Version 2.1.0 - [March 10, 2025]
 
-## 🔧 Configuration Files
+#### Update Overview
 
-- **`next.config.ts`** - Next.js configuration with SVG support
-- **`tailwind.config.ts`** - Tailwind CSS configuration
-- **`biome.json`** - Linting and formatting rules
-- **`components.json`** - shadcn/ui configuration
-- **`tsconfig.json`** - TypeScript configuration
+- Added new dashboard design for saas product.
+- New Metrics card
+- Product performance tab with charts
 
-## 🚀 Performance Features
+### Version 2.0.1 - [February 27, 2025]
 
-- **Turbopack** - Fast development bundler
-- **Standalone Output** - Optimized production builds
-- **SVG Components** - Optimized SVG handling
-- **Font Optimization** - Next.js font optimization
-- **Image Optimization** - Built-in image optimization
+#### Update Overview
 
-## 📱 Features
+- Upgraded to Tailwind CSS v4 for better performance and efficiency.
+- Updated class usage to match the latest syntax and features.
+- Replaced deprecated class and optimized styles.
 
-- ⚡ **Fast Development** - Turbopack for instant refresh
-- 🎨 **Modern UI** - Beautiful, accessible components
-- 🌙 **Dark Mode** - Built-in theme switching
-- 📱 **Responsive** - Mobile-first design
-- 🔒 **Type Safe** - Full TypeScript support
-- 🚀 **Production Ready** - Optimized builds
-- 🐳 **Docker Ready** - Containerized deployment
+#### Next Steps
 
-## 🤝 Contributing
+- Run npm install or yarn install to update dependencies.
+- Check for any style changes or compatibility issues.
+- Refer to the Tailwind CSS v4 [Migration Guide](https://tailwindcss.com/docs/upgrade-guide) on this release. if needed.
+- This update keeps the project up to date with the latest Tailwind improvements. 🚀
 
-1. Follow the conventional commit format
-2. Run linting and formatting before committing
-3. Ensure all TypeScript types are correct
-4. Test your changes thoroughly
+### v2.0.0 (February 2025)
 
-## 📄 License
+A major update focused on Next.js 15 implementation and comprehensive redesign.
 
-This project is licensed under the MIT License.
+#### Major Improvements
 
----
+- Complete redesign using Next.js 15 App Router and React Server Components
+- Enhanced user interface with Next.js-optimized components
+- Improved responsiveness and accessibility
+- New features including collapsible sidebar, chat screens, and calendar
+- Redesigned authentication using Next.js App Router and server actions
+- Updated data visualization using ApexCharts for React
 
-Built with ❤️ using Next.js and modern web technologies.
+#### Breaking Changes
+
+- Migrated from Next.js 14 to Next.js 15
+- Chart components now use ApexCharts for React
+- Authentication flow updated to use Server Actions and middleware
+
+#### Breaking Changes
+
+- Migrated from Next.js 14 to Next.js 15
+- Chart components now use ApexCharts for React
+- Authentication flow updated to use Server Actions and middleware
+
+[Read more](https://tailadmin.com/docs/update-logs/nextjs) on this release.
+
+### v1.3.4 (July 01, 2024)
+
+- Fixed JSvectormap rendering issues
+
+### v1.3.3 (June 20, 2024)
+
+- Fixed build error related to Loader component
+
+### v1.3.2 (June 19, 2024)
+
+- Added ClickOutside component for dropdown menus
+- Refactored sidebar components
+- Updated Jsvectormap package
+
+### v1.3.1 (Feb 12, 2024)
+
+- Fixed layout naming consistency
+- Updated styles
+
+### v1.3.0 (Feb 05, 2024)
+
+- Upgraded to Next.js 14
+- Added Flatpickr integration
+- Improved form elements
+- Enhanced multiselect functionality
+- Added default layout component
+
+## License
+
+Refer to our [LICENSE](https://tailadmin.com/license) page for more information.
