@@ -1,15 +1,24 @@
-import ResetPasswordForm from "@/components/auth/ResetPasswordForm";
+import ResetPasswordPage from "@/modules/reset-password";
 import { Metadata } from "next";
-
-import React from "react";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Next.js Reset Password | Precision Admin - Next.js Dashboard Template",
-  description:
-    "This is Next.js Password Reset page for Precision Admin Dashboard Template",
-  // other metadata
+  title: "Reset Password",
+  description: "This is Password Reset",
 };
 
-export default function ResetPasswordPage() {
-  return <ResetPasswordForm />;
+export default async function ResetPassword({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const params = await searchParams;
+  const email = params.email;
+
+  // Server-side check: redirect to home if no email
+  if (!email || typeof email !== "string") {
+    redirect("/");
+  }
+
+  return <ResetPasswordPage email={email} />;
 }
