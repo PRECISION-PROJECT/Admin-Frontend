@@ -1,13 +1,18 @@
+import React from "react";
+import { cn } from "@/utils/cn";
+
 type PaginationProps = {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
+  className?: string;
 };
 
 const Pagination: React.FC<PaginationProps> = ({
   currentPage,
   totalPages,
   onPageChange,
+  className,
 }) => {
   const pagesAroundCurrent = Array.from(
     { length: Math.min(3, totalPages) },
@@ -15,7 +20,7 @@ const Pagination: React.FC<PaginationProps> = ({
   );
 
   return (
-    <div className="flex items-center justify-center">
+    <div className={cn("flex items-center justify-center", className)}>
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
@@ -29,11 +34,12 @@ const Pagination: React.FC<PaginationProps> = ({
           <button
             key={page}
             onClick={() => onPageChange(page)}
-            className={`px-4 py-2 rounded ${
+            className={cn(
+              "px-4 py-2 flex w-10 items-center justify-center h-10 rounded-lg text-sm font-medium hover:bg-blue-500/[0.08] hover:text-brand-500 dark:hover:text-brand-500",
               currentPage === page
                 ? "bg-brand-500 text-white"
                 : "text-gray-700 dark:text-gray-400"
-            } flex w-10 items-center justify-center h-10 rounded-lg text-sm font-medium hover:bg-blue-500/[0.08] hover:text-brand-500 dark:hover:text-brand-500`}
+            )}
           >
             {page}
           </button>

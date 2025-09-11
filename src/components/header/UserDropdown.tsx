@@ -1,16 +1,20 @@
 "use client";
 import { useLogoutMutate } from "@/api/auth";
 import { ECookie } from "@/api/http-instance";
+import { useWhoAmIQuery } from "@/api/user";
+import { TErrorResponse } from "@/types";
 import { deleteCookieData } from "@/utils";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { useState } from "react";
+import { toast } from "sonner";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
 
 export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const { data, isLoading } = useWhoAmIQuery();
   const useLogoutMutation = useLogoutMutate();
 
   function toggleDropdown() {
@@ -22,10 +26,18 @@ export default function UserDropdown() {
   }
 
   const onLogout = async () => {
-    await useLogoutMutation.mutateAsync();
-    deleteCookieData(ECookie.ACCESS_TOKEN);
-    deleteCookieData(ECookie.REFRESH_TOKEN);
-    router.push("/signin");
+    if (useLogoutMutation.isPending || isLoading) return;
+    try {
+      await useLogoutMutation.mutateAsync();
+      deleteCookieData(ECookie.ACCESS_TOKEN);
+      deleteCookieData(ECookie.REFRESH_TOKEN);
+      router.push("/signin");
+    } catch (error: unknown) {
+      const msg = (error as unknown as TErrorResponse).message;
+      toast.error("Failed to logout", {
+        description: msg,
+      });
+    }
   };
 
   return (
@@ -43,7 +55,9 @@ export default function UserDropdown() {
           />
         </span>
 
-        <span className="block mr-1 font-medium text-theme-sm">Jacob</span>
+        <span className="block mr-1 font-medium text-theme-sm">
+          {data?.firstName}
+        </span>
 
         <svg
           className={`stroke-gray-500 dark:stroke-gray-400 transition-transform duration-200 ${
@@ -72,10 +86,10 @@ export default function UserDropdown() {
       >
         <div>
           <span className="block font-medium text-gray-700 text-theme-sm dark:text-gray-400">
-            Jacob
+            {data?.firstName + " " + data?.lastName}
           </span>
           <span className="mt-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">
-            mytoandn@gmail.com
+            {data?.email}
           </span>
         </div>
 

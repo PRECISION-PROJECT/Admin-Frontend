@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Table,
   TableBody,
@@ -7,8 +6,8 @@ import {
   TableRow,
 } from "../../ui/table";
 
-import Badge from "../../ui/badge/Badge";
 import Image from "next/image";
+import Badge from "../../ui/badge/Badge";
 
 interface Order {
   id: number;

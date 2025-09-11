@@ -7,7 +7,7 @@ import React from "react";
 import { useFormContext } from "react-hook-form";
 import type { SignInFormData } from "../../hooks/validation";
 
-const SigninFormUI = () => {
+const SigninFormUI = ({ isLoading }: { isLoading: boolean }) => {
   const { control } = useFormContext<SignInFormData>();
 
   return (
@@ -43,7 +43,13 @@ const SigninFormUI = () => {
         </Link>
       </div>
       <div>
-        <Button className="w-full" size="sm" type="submit">
+        <Button
+          className="w-full"
+          size="sm"
+          type="submit"
+          disabled={isLoading}
+          loading={isLoading}
+        >
           Sign in
         </Button>
       </div>

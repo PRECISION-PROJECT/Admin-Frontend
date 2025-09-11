@@ -5,11 +5,11 @@ import SigninFormUI from "../../components/SigninFormUI";
 import { useSignIn } from "../../hooks/useSignIn";
 
 const SigninFormContainer = () => {
-  const { form, onSubmit } = useSignIn();
+  const { form, onSubmit, isLoading } = useSignIn();
 
   return (
     <FormWrapper form={form} onSubmit={onSubmit}>
-      <SigninFormUI />
+      <SigninFormUI isLoading={isLoading} />
     </FormWrapper>
   );
 };

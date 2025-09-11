@@ -10,8 +10,9 @@ export type TApiResponse<T> = {
 } & AxiosResponse;
 
 export type TErrorResponse = {
+  errors?: Record<string, string>;
   message: string;
-  code: number;
+  statusCode: number;
 };
 
 export type FCC<P = object> = FC<PropsWithChildren<P>>;

@@ -4,6 +4,7 @@ import { SidebarProvider } from "@/context/SidebarContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 import QueryClientProvider from "@/providers/QueryClientProvider";
 import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
+import { Toaster } from "sonner";
 import type { ReactNode } from "react";
 
 export interface ProvidersProps {
@@ -15,6 +16,12 @@ function Providers({ children }: ProvidersProps) {
     <QueryClientProvider>
       <ThemeProvider>
         <SidebarProvider>{children}</SidebarProvider>
+        <Toaster
+          position="bottom-right"
+          expand={true}
+          richColors={true}
+          closeButton={true}
+        />
         <ProgressBar
           height="4px"
           color="#a12d23"

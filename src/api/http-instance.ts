@@ -97,8 +97,8 @@ class HttpInstance {
     const { url } = originalRequest;
     const data = error.response?.data as TErrorResponse;
 
-    if (data.code !== 401) {
-      return Promise.reject(error);
+    if (data.statusCode !== 401) {
+      return Promise.reject(data);
     }
 
     if (this.isTokenRefreshing) {

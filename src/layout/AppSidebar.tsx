@@ -22,6 +22,7 @@ import {
   TableIcon,
   TaskIcon,
   UserCircleIcon,
+  UserIcon,
 } from "../icons/index";
 
 type NavItem = {
@@ -44,6 +45,16 @@ const navItems: NavItem[] = [
       { name: "Stocks", path: "/stocks" },
       { name: "SaaS", path: "/saas", new: true },
       { name: "Logistics", path: "/logistics", new: true },
+    ],
+  },
+  {
+    icon: <UserIcon />,
+    name: "Account & Permission",
+    subItems: [
+      { name: "Admins", path: "/admin" },
+      { name: "User", path: "/user" },
+      { name: "Role", path: "/role" },
+      { name: "Permission", path: "/permission" },
     ],
   },
   {

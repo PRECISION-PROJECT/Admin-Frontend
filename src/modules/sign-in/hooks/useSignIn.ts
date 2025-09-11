@@ -7,6 +7,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { signInSchema, type SignInFormData } from "./validation";
+import { toast } from "sonner";
+import { TErrorResponse } from "@/types";
 
 export const useSignIn = () => {
   const useSigninMutation = useSignInMutate();
@@ -30,13 +32,20 @@ export const useSignIn = () => {
         setCookieData(ECookie.ACCESS_TOKEN, accessToken, { path: "/" });
         setCookieData(ECookie.REFRESH_TOKEN, refreshToken, { path: "/" });
       }
-      router.push("/");
+      toast.success("Sign in successfully");
+      setTimeout(() => {
+        router.push("/");
+      }, 300);
     } catch (error) {
-      console.error("Sign in error:", error);
+      const msg = (error as unknown as TErrorResponse).errors?.password;
+      toast.error("Failed to logout", {
+        description: msg,
+      });
     }
   };
 
   return {
+    isLoading: useSigninMutation.isPending,
     form,
     onSubmit,
   };
