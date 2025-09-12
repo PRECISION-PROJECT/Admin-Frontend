@@ -51,10 +51,10 @@ const navItems: NavItem[] = [
     icon: <UserIcon />,
     name: "Account & Permission",
     subItems: [
-      { name: "Admins", path: "/admin" },
-      { name: "User", path: "/user" },
-      { name: "Role", path: "/role" },
-      { name: "Permission", path: "/permission" },
+      { name: "Admin Accounts", path: "/admin-accounts" },
+      { name: "User Accounts", path: "/user-accounts" },
+      { name: "Roles", path: "/role" },
+      { name: "Permissions", path: "/permission" },
     ],
   },
   {

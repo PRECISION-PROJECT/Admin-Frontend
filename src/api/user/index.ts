@@ -1,16 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
-import { getWhoAmI } from "./request";
-import { GetWhoAmIResponse } from "./response.dto";
+import { getUserList } from "./request";
+import { GetUserListParams } from "./request.dto";
+import { GetUserListResponse } from "./response.dto";
 
-export const useWhoAmIQuery = (
+export const useGetUserList = (
+  params: GetUserListParams,
   queryParams?: Omit<
-    Parameters<typeof useQuery<GetWhoAmIResponse>>[0],
+    Parameters<typeof useQuery<GetUserListResponse>>[0],
     "queryKey" | "queryFn"
   >
 ) => {
   return useQuery({
-    queryKey: ["whoami"],
-    queryFn: ({ signal }) => getWhoAmI(signal),
+    queryKey: ["user-list", params],
+    queryFn: ({ signal }) => getUserList(params, signal),
     ...queryParams,
   });
 };

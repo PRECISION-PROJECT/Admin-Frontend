@@ -1,8 +1,12 @@
 import httpInstance from "../http-instance";
-import { GetWhoAmIResponse } from "./response.dto";
+import { GetUserListParams } from "./request.dto";
+import { GetUserListResponse } from "./response.dto";
 
-export const getWhoAmI = (signal?: AbortSignal) => {
+export const getUserList = (
+  params: GetUserListParams,
+  signal?: AbortSignal
+) => {
   return httpInstance
-    .get<GetWhoAmIResponse>("/auth/me", { signal })
+    .get<GetUserListResponse>("/users", { params, signal })
     .then((res) => res);
 };

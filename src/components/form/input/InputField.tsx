@@ -1,3 +1,5 @@
+"use client";
+
 import EyeCloseIcon from "@/icons/eye-close.svg";
 import EyeIcon from "@/icons/eye.svg";
 import { cn } from "@/utils/cn";

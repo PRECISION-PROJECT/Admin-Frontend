@@ -33,11 +33,10 @@ export type CommonResponseType = {
   updatedBy?: string;
 };
 
-export type PaginatedResponseType<T> = TApiResponse<{
+export type PaginatedResponseType<T> = {
   data: T[];
-  meta: {
-    count: number;
-    currentPage: number;
-    totalPages: number;
-  };
-}>;
+  hasNextPage: boolean;
+  page: number;
+  totalPage: number;
+  totalCount: number;
+};

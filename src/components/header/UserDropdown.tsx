@@ -1,7 +1,6 @@
 "use client";
-import { useLogoutMutate } from "@/api/auth";
+import { useLogoutMutate, useWhoAmIQuery } from "@/api/auth";
 import { ECookie } from "@/api/http-instance";
-import { useWhoAmIQuery } from "@/api/user";
 import { TErrorResponse } from "@/types";
 import { deleteCookieData } from "@/utils";
 import Image from "next/image";

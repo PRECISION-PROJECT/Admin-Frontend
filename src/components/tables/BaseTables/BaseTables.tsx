@@ -209,10 +209,7 @@ const BaseTables = <T extends { id?: string | number }>({
                     className="text-center py-12"
                   >
                     <div className="flex flex-col items-center justify-center space-y-4">
-                      <NoDataIcon className="w-24 h-24 text-gray-400 dark:text-gray-600" />
-                      <p className="text-gray-500 dark:text-gray-400">
-                        No data available
-                      </p>
+                      <NoDataIcon className="text-gray-400 dark:text-gray-600" />
                     </div>
                   </TableCell>
                 </TableRow>

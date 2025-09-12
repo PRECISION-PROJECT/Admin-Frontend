@@ -10,42 +10,58 @@ import type {
 import { Controller } from "react-hook-form";
 
 import Show from "@/components/common/Show";
-import Checkbox from "@/components/form/input/Checkbox";
+import DatePickerInput from "@/components/form/date-picker-input";
 import { cn } from "@/utils/cn";
 
-interface FormCheckboxFieldProps<T extends FieldValues = FieldValues> {
+interface FormDatePickerFieldProps<T extends FieldValues = FieldValues> {
   control: Control<T>;
   name: FieldPath<T>;
   defaultValue?: FieldPathValue<T, FieldPath<T>>;
+  placeholder?: string;
   label?: string;
   required?: boolean;
   loading?: boolean;
+  disabled?: boolean;
+  showTimeSelect?: boolean;
+  dateFormat?: string;
+  minDate?: Date;
+  minTime?: Date;
 
   // Styling props
   labelClassName?: HTMLAttributes<HTMLLabelElement>["className"];
   containerClassName?: HTMLAttributes<HTMLDivElement>["className"];
-  checkboxClassName?: string;
+  datePickerClassName?: string;
   errorClassName?: string;
   requiredClassName?: HTMLAttributes<HTMLSpanElement>["className"];
+  hint?: string;
+  parentClassName?: string;
 }
 
-const FormCheckboxField = <T extends FieldValues>({
+const FormDatePickerField = <T extends FieldValues>({
   control,
   name,
+  placeholder = "Select date",
   label,
   defaultValue,
   required = false,
   loading = false,
+  disabled = false,
+  showTimeSelect = false,
+  dateFormat = "dd/MM/yyyy",
+  minDate,
+  minTime,
 
   // Styling
   labelClassName,
   containerClassName = "",
-  checkboxClassName,
+  datePickerClassName,
   errorClassName,
   requiredClassName,
+  hint,
+  parentClassName,
 
-  ...checkboxProps
-}: FormCheckboxFieldProps<T>) => {
+  ...datePickerProps
+}: FormDatePickerFieldProps<T>) => {
   return (
     <Controller
       control={control}
@@ -69,21 +85,31 @@ const FormCheckboxField = <T extends FieldValues>({
               </label>
             </Show>
 
-            {/* Checkbox Container */}
+            {/* DatePicker Container */}
             <div className="flex-1">
               {loading ? (
-                <div className="h-4 w-4 rounded border border-gray-300 bg-gray-100 animate-pulse dark:bg-gray-800 dark:border-gray-700" />
+                <div className="h-11 w-full rounded-lg border border-gray-300 bg-gray-100 animate-pulse dark:bg-gray-800 dark:border-gray-700" />
               ) : (
-                <Checkbox
+                <DatePickerInput
                   {...field}
-                  {...checkboxProps}
-                  checked={field.value || false}
-                  className={cn(checkboxClassName)}
+                  {...datePickerProps}
+                  selected={field.value}
+                  onChange={field.onChange}
+                  placeholder={placeholder}
+                  disabled={disabled}
+                  error={isError}
+                  hint={hint || error?.message}
+                  showTimeSelect={showTimeSelect}
+                  dateFormat={dateFormat}
+                  minDate={minDate}
+                  minTime={minTime}
+                  className={cn(datePickerClassName)}
+                  parentClassName={parentClassName}
                 />
               )}
 
-              {/* Error Message */}
-              <Show when={isError}>
+              {/* Error Message - Only show if not using hint prop */}
+              <Show when={isError && !hint}>
                 <p
                   className={cn(
                     "mt-1.5 text-xs text-error-500",
@@ -101,4 +127,4 @@ const FormCheckboxField = <T extends FieldValues>({
   );
 };
 
-export default FormCheckboxField;
+export default FormDatePickerField;

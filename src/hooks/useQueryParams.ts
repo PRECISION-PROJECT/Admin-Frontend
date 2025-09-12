@@ -4,12 +4,12 @@ import { useState } from "react";
 import { useSearchParams, usePathname } from "next/navigation";
 import { z } from "zod";
 
-interface UseQueryParamsConfig<T extends z.ZodTypeAny> {
+interface UseQueryParamsConfig<T extends z.ZodObject> {
   schema: T;
   defaultValues: z.infer<T>;
 }
 
-export function useQueryParams<T extends z.ZodTypeAny>(
+export function useQueryParams<T extends z.ZodObject>(
   config: UseQueryParamsConfig<T>
 ): {
   queryParams: z.infer<T>;
@@ -23,21 +23,28 @@ export function useQueryParams<T extends z.ZodTypeAny>(
 
   const [queryParams, setQueryParamsState] = useState<z.infer<T>>(() => {
     const initialParse = config.schema.safeParse({
-      ...config.defaultValues as Record<string, unknown>,
+      ...config.defaultValues,
       ...searchParamsObject,
     });
     return initialParse.success ? initialParse.data : config.defaultValues;
   });
 
   const setQueryParams = (newParams: Partial<z.infer<T>>) => {
-    const mergedParams = { ...queryParams as Record<string, unknown>, ...newParams };
+    const mergedParams = { ...queryParams, ...newParams };
 
     const parsedQuery = config.schema.safeParse(mergedParams);
 
     if (parsedQuery.success) {
       setQueryParamsState(parsedQuery.data);
 
-      const newUrlParams = new URLSearchParams(parsedQuery.data as any);
+      const urlParamsObject = Object.fromEntries(
+        Object.entries(parsedQuery.data).map(([key, value]) => [
+          key,
+          String(value),
+        ])
+      );
+
+      const newUrlParams = new URLSearchParams(urlParamsObject);
 
       window.history.pushState(
         null,

@@ -6,6 +6,7 @@ import {
 } from "./request.dto";
 import {
   ForgotPasswordResponse,
+  GetWhoAmIResponse,
   ResetPasswordResponse,
   SigninResponse,
 } from "./response.dto";
@@ -35,5 +36,11 @@ export const forgotPassword = (body: ForgotPasswordRequestParams) => {
       "/auth/forgot/password",
       body
     )
+    .then((res) => res);
+};
+
+export const getWhoAmI = (signal?: AbortSignal) => {
+  return httpInstance
+    .get<GetWhoAmIResponse>("/auth/me", { signal })
     .then((res) => res);
 };
