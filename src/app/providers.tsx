@@ -4,8 +4,8 @@ import { SidebarProvider } from "@/context/SidebarContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 import QueryClientProvider from "@/providers/QueryClientProvider";
 import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
-import { Toaster } from "sonner";
 import type { ReactNode } from "react";
+import { Toaster } from "sonner";
 
 export interface ProvidersProps {
   children: ReactNode;

@@ -12,7 +12,6 @@ type InputProps = {
   id?: string;
   name?: string;
   placeholder?: string;
-  defaultValue?: string | number;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
   min?: string;
@@ -27,6 +26,7 @@ type InputProps = {
   prefix?: React.ReactNode;
   suffix?: React.ReactNode;
   numericOnly?: boolean;
+  value?: string | number;
 } & InputHTMLAttributes<HTMLInputElement>;
 
 const Input: FC<InputProps> = ({
@@ -34,7 +34,6 @@ const Input: FC<InputProps> = ({
   id,
   name,
   placeholder,
-  defaultValue,
   onChange,
   className = "",
   min,
@@ -49,6 +48,7 @@ const Input: FC<InputProps> = ({
   prefix,
   suffix,
   numericOnly = false,
+  value,
   ...props
 }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -114,11 +114,11 @@ const Input: FC<InputProps> = ({
         )}
 
         <input
+          value={value || ""}
           type={inputType}
           id={id}
           name={name}
           placeholder={placeholder}
-          defaultValue={defaultValue}
           onChange={handleChange}
           min={min}
           max={max}

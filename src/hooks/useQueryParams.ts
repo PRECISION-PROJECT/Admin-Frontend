@@ -18,7 +18,7 @@ export function useQueryParams<T extends z.ZodObject>(
   const searchParams = useSearchParams();
   const pathname = usePathname();
 
-  // Convert URLSearchParams to an object
+  /** Convert URLSearchParams to an object */
   const searchParamsObject = Object.fromEntries(searchParams.entries());
 
   const [queryParams, setQueryParamsState] = useState<z.infer<T>>(() => {
@@ -30,8 +30,16 @@ export function useQueryParams<T extends z.ZodObject>(
   });
 
   const setQueryParams = (newParams: Partial<z.infer<T>>) => {
-    const mergedParams = { ...queryParams, ...newParams };
+    /** Empty object -> reset all default values */
+    if (Object.keys(newParams).length === 0) {
+      setQueryParamsState(config.defaultValues);
+      /** Clear URL params */
+      window.history.pushState(null, "", pathname);
+      return;
+    }
 
+    /** Other params -> merge with existing params */
+    const mergedParams = { ...queryParams, ...newParams };
     const parsedQuery = config.schema.safeParse(mergedParams);
 
     if (parsedQuery.success) {

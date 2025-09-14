@@ -5,8 +5,14 @@ import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { GetUserListParams } from "@/api/user/request.dto";
-import { initialQueryParams } from "./useUserAccountList";
 import dayjs from "dayjs";
+
+export const initialQueryParams = {
+  search: "",
+  page: 1,
+  size: 10,
+}
+
 const schema = z.object({
   search: z.string().optional(),
   status: z.string().optional(),
@@ -28,15 +34,14 @@ export const useUserAccountFilter = ({
   });
 
   const onClear = useCallback(() => {
-    alert('123')
     formMethods.reset({});
-    setQueryParams(initialQueryParams);
+    setQueryParams({});
   }, [formMethods, setQueryParams]);
 
   useEffect(() => {
     formMethods.reset({
-      status: queryParams.status || "",
-      search: queryParams.search || "",
+      status: queryParams.status,
+      search: queryParams.search,
       startDate: queryParams.startDate
         ? dayjs(queryParams.startDate).toDate()
         : null,
