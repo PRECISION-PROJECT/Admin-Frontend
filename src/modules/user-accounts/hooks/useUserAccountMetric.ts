@@ -1,8 +1,11 @@
+"use client";
+
+import { useGetUserMetric } from "@/api/user";
+
 export const useUserAccountMetric = () => {
+  const { data, isLoading } = useGetUserMetric();
   return {
-    numberOfUser: 100,
-    numberOfActiveUser: 100,
-    numberOfInactiveUser: 100,
-    numberOfBlockUser: 100,
+    isLoading,
+    userData: data?.data,
   };
 };

@@ -40,3 +40,9 @@ export type PaginatedResponseType<T> = {
   totalPage: number;
   totalCount: number;
 };
+
+export type BaseResponseType<T> = {
+  data: T;
+  message: string;
+  statusCode: number;
+}

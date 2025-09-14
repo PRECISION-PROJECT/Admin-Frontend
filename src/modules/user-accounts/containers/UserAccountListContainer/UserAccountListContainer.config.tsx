@@ -2,8 +2,12 @@ import { GetWhoAmIResponse } from "@/api/auth/response.dto";
 import { AugmentedColumnDef } from "@/components/tables/BaseTables";
 import { formatDate } from "@/utils";
 import React from "react";
+import { UserAccountListModal } from "../../hooks";
+import Button from "@/components/ui/button/Button";
 
-export const columns = (): AugmentedColumnDef<GetWhoAmIResponse>[] => [
+export const columns = (
+  openModal: (modalType: UserAccountListModal, id: string) => void
+): AugmentedColumnDef<GetWhoAmIResponse>[] => [
   {
     accessorKey: "id",
     header: "User Id",
@@ -46,8 +50,34 @@ export const columns = (): AugmentedColumnDef<GetWhoAmIResponse>[] => [
     cell: (props) => {
       const row = props.row.original;
       const updatedAt = row.updatedAt;
+      return <>{updatedAt ? formatDate(updatedAt) : "-"}</>;
+    },
+  },
+  {
+    accessorKey: "actions",
+    header: "Actions",
+    cell: (props) => {
+      const row = props.row.original;
+      const status = row?.status;
+
+      if (status === "active") {
+        return (
+          <Button
+            size="sm"
+            onClick={() => openModal(UserAccountListModal.DEACTIVATE, row.id)}
+          >
+            Deactivate
+          </Button>
+        );
+      }
+
       return (
-        <>{updatedAt ? formatDate(updatedAt) : "-"}</>
+        <Button
+          size="sm"
+          onClick={() => openModal(UserAccountListModal.ACTIVATE, row.id)}
+        >
+          Activate
+        </Button>
       );
     },
   },

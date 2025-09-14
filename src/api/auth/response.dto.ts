@@ -9,6 +9,7 @@ export type GetWhoAmIResponse = {
   createdAt: string;
   updatedAt: string;
   deletedAt: string;
+  status?: string;
 };
 
 export type SigninResponse = {

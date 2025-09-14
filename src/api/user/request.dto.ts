@@ -5,3 +5,13 @@ export type GetUserListParams = {
   endDate?: string;
   status?: string;
 } & CommonRequestType;
+
+export type DeactivateUserRequestParams = {
+  id: string;
+};
+
+export type ActivateUserRequestParams = {
+  id: string;
+};
+
+export type ActivateUserResponse = DeactivateUserRequestParams;

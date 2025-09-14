@@ -1,18 +1,20 @@
+import { GetUserMetricResponse } from "@/api/user/response.dto";
 import React from "react";
 
 type Props = {
-  numberOfUser: number;
-  numberOfActiveUser: number;
-  numberOfInactiveUser: number;
-  numberOfBlockUser: number;
+  isLoading: boolean;
+  data?: Pick<
+    GetUserMetricResponse["data"],
+    | "totalUsers"
+    | "activeUsers"
+    | "inactiveUsers"
+    | "adminUsers"
+    | "staffUsers"
+    | "regularUsers"
+  >;
 };
 
-const UserAccountMetricUI = ({
-  numberOfActiveUser,
-  numberOfInactiveUser,
-  numberOfUser,
-  numberOfBlockUser,
-}: Props) => {
+const UserAccountMetricUI = ({ data }: Props) => {
   return (
     <div className="mb-6 rounded-2xl border border-gray-200 bg-white p-4 sm:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
       <div className="mb-6 flex items-center justify-between">
@@ -25,34 +27,34 @@ const UserAccountMetricUI = ({
       <div className="grid grid-cols-1 rounded-xl border border-gray-200 sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-y-0 dark:divide-gray-800 dark:border-gray-800">
         <div className="border-b p-5 sm:border-r lg:border-b-0">
           <p className="mb-1.5 text-sm text-gray-400 dark:text-gray-500">
-            Total users
+            Total Users
           </p>
           <h3 className="text-3xl text-gray-800 dark:text-white/90">
-            {numberOfUser}
+            {data?.totalUsers ?? "-"}
           </h3>
         </div>
         <div className="border-b p-5 lg:border-b-0">
           <p className="mb-1.5 text-sm text-gray-400 dark:text-gray-500">
-            Active users
+            Inactive users
           </p>
           <h3 className="text-3xl text-gray-800 dark:text-white/90">
-            {numberOfActiveUser}
+            {data?.inactiveUsers ?? "-"}
           </h3>
         </div>
         <div className="border-b p-5 sm:border-r sm:border-b-0">
           <p className="mb-1.5 text-sm text-gray-400 dark:text-gray-500">
-            Inactive users
+            Active users
           </p>
           <h3 className="text-3xl text-gray-800 dark:text-white/90">
-            {numberOfInactiveUser}
+            {data?.activeUsers ?? "-"}
           </h3>
         </div>
         <div className="p-5">
           <p className="mb-1.5 text-sm text-gray-400 dark:text-gray-500">
-            Blocked users
+            Regular users
           </p>
           <h3 className="text-3xl text-gray-800 dark:text-white/90">
-            {numberOfBlockUser}
+            {data?.regularUsers ?? "-"}
           </h3>
         </div>
       </div>

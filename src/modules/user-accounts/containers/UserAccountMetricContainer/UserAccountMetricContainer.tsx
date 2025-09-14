@@ -1,22 +1,12 @@
+"use client";
+
 import React from "react";
 import { useUserAccountMetric } from "../../hooks";
 import { UserAccountMetricUI } from "../../components";
 
 const UserAccountMetricContainer = () => {
-  const {
-    numberOfUser,
-    numberOfActiveUser,
-    numberOfInactiveUser,
-    numberOfBlockUser,
-  } = useUserAccountMetric();
-  return (
-    <UserAccountMetricUI
-      numberOfUser={numberOfUser}
-      numberOfActiveUser={numberOfActiveUser}
-      numberOfInactiveUser={numberOfInactiveUser}
-      numberOfBlockUser={numberOfBlockUser}
-    />
-  );
+  const { userData, isLoading } = useUserAccountMetric();
+  return <UserAccountMetricUI isLoading={isLoading} data={userData} />;
 };
 
 export default UserAccountMetricContainer;
