@@ -89,6 +89,7 @@ const navItems: NavItem[] = [
       { name: "Add Product", path: "/add-product" },
       { name: "Categories", path: "/categories" },
       { name: "Add Category", path: "/add-category" },
+      { name: "Orders", path: "/orders" },
       { name: "Billing", path: "/billing" },
       { name: "Invoices", path: "/invoices" },
       { name: "Single Invoice", path: "/single-invoice" },
