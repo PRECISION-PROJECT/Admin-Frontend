@@ -7,7 +7,7 @@ export interface OrderLineItem {
   unitPrice: number;
   totalPrice: number;
   sku?: string;
-  specifications?: Record<string, any>;
+  specifications?: Record<string, unknown>;
 }
 
 export interface User {
