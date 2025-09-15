@@ -1,9 +1,10 @@
+import { cn } from "@/utils";
 import React, { useState } from "react";
 
 interface Option {
   value: string;
-  text: string;
-  selected: boolean;
+  label: string;
+  disabled?: boolean;
 }
 
 interface MultiSelectProps {
@@ -40,7 +41,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
   };
 
   const selectedValuesText = value.map(
-    (val) => options.find((option) => option.value === val)?.text || ""
+    (val) => options.find((option) => option.value === val)?.label || ""
   );
 
   return (
@@ -49,11 +50,11 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
         <div className="relative flex flex-col items-center">
           <div onClick={toggleDropdown} className="w-full">
             <div className="mb-2 flex h-11 rounded-lg border border-gray-300 py-1.5 pl-3 pr-3 shadow-theme-xs outline-hidden transition focus:border-brand-300 focus:shadow-focus-ring dark:border-gray-700 dark:bg-gray-900 dark:focus:border-brand-300">
-              <div 
-                className="flex flex-nowrap flex-auto gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden" 
-                style={{ 
-                  scrollbarWidth: 'none', 
-                  msOverflowStyle: 'none'
+              <div
+                className="flex flex-nowrap flex-auto gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden"
+                style={{
+                  scrollbarWidth: "none",
+                  msOverflowStyle: "none",
                 }}
               >
                 {selectedValuesText.length > 0 ? (
@@ -135,18 +136,30 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
             >
               <div className="flex flex-col">
                 {options.map((option, index) => (
-                  <div key={`option-${index}-${option.text}`}>
+                  <div key={`option-${index}-${option.label}`}>
                     <div
-                      className={`hover:bg-primary/5 w-full cursor-pointer rounded-t border-b border-gray-200 dark:border-gray-800`}
-                      onClick={() => handleSelect(option.value)}
+                      className={cn(
+                        "hover:bg-primary/5 w-full cursor-pointer rounded-t border-b border-gray-200 dark:border-gray-800",
+                        {
+                          "opacity-50 cursor-not-allowed": option?.disabled,
+                        }
+                      )}
+                      onClick={() => {
+                        if (option?.disabled) return;
+                        handleSelect(option.value);
+                      }}
                     >
                       <div
-                        className={`relative flex w-full items-center p-2 pl-2 ${
-                          value.includes(option.value) ? "bg-primary/10" : ""
-                        }`}
+                        className={cn(
+                          "relative flex w-full items-center p-2 pl-2 ",
+                          {
+                            "opacity-50 cursor-not-allowed": option?.disabled,
+                            "bg-primary/10": value.includes(option.value),
+                          }
+                        )}
                       >
                         <div className="mx-2 leading-6 text-gray-800 dark:text-white/90">
-                          {option.text}
+                          {option.label}
                         </div>
                       </div>
                     </div>

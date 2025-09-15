@@ -5,11 +5,11 @@ import React from "react";
 import { useFormContext } from "react-hook-form";
 
 const productTypeOptions = [
-  { value: "moulding", text: "Moulding" },
-  { value: "architectural", text: "Architectural" },
-  { value: "mantel", text: "Mantel" },
-  { value: "wood_import", text: "Wood Import" },
-  { value: "wood_export", text: "Wood Export" },
+  { value: "moulding", label: "Moulding" },
+  { value: "architectural", label: "Architectural" },
+  { value: "mantel", label: "Mantel" },
+  { value: "wood_import", label: "Wood Import" },
+  { value: "wood_export", label: "Wood Export" },
 ];
 
 const productStatusOptions = [

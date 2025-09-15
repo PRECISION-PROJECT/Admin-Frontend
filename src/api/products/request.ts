@@ -10,3 +10,12 @@ export const getProductList = (
     .get<GetProductListResponse>("/products", { params, signal })
     .then((res) => res);
 };
+
+export const getProductFeatureList = (
+  params: GetProductListParams,
+  signal?: AbortSignal
+) => {
+  return httpInstance
+    .get<GetProductListResponse>("/products/featured", { params, signal })
+    .then((res) => res);
+};

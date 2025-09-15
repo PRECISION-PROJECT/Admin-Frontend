@@ -1,9 +1,7 @@
-import React from 'react'
+import { ProductFeatureContainer } from "./containers";
 
 const ProductFeatureModule = () => {
-  return (
-    <div>ProductFeatureModule</div>
-  )
-}
+  return <ProductFeatureContainer />;
+};
 
-export default ProductFeatureModule
+export default ProductFeatureModule;

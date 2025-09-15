@@ -16,8 +16,8 @@ import Label from "../Label";
 
 interface Option {
   value: string;
-  text: string;
-  selected?: boolean;
+  label: string;
+  disabled?: boolean;
 }
 
 interface FormMultiSelectFieldProps<T extends FieldValues = FieldValues> {
@@ -89,7 +89,7 @@ const FormMultiSelectField = <T extends FieldValues>({
               ) : (
                 <MultiSelect
                   {...multiSelectProps}
-                  options={options.map(opt => ({ ...opt, selected: false }))}
+                  options={options}
                   value={field.value || []}
                   onChange={field.onChange}
                   disabled={disabled}
