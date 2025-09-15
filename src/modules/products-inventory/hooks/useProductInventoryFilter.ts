@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { GetProductListParams } from "@/api/products/request.dto";
+import { GetProductInventoryListParams } from "@/api/products-inventory/request.dto";
 
 const schema = z.object({
   search: z.string().optional(),
@@ -21,11 +21,11 @@ const schema = z.object({
 });
 
 type Props = {
-  queryParams: GetProductListParams;
-  setQueryParams: (params: GetProductListParams) => void;
+  queryParams: GetProductInventoryListParams;
+  setQueryParams: (params: GetProductInventoryListParams) => void;
 };
 
-export const useProductFilter = ({ queryParams, setQueryParams }: Props) => {
+export const useProductInventoryFilter = ({ queryParams, setQueryParams }: Props) => {
   const formMethods = useForm({
     resolver: zodResolver(schema),
   });

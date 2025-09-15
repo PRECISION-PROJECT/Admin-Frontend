@@ -10,16 +10,17 @@ import type {
 import { Controller } from "react-hook-form";
 
 import Show from "@/components/common/Show";
-import Select from "@/components/form/Select";
+import MultiSelect from "@/components/form/MultiSelect";
 import { cn } from "@/utils/cn";
 import Label from "../Label";
 
 interface Option {
   value: string;
-  label: string;
+  text: string;
+  selected?: boolean;
 }
 
-interface FormSelectFieldProps<T extends FieldValues = FieldValues> {
+interface FormMultiSelectFieldProps<T extends FieldValues = FieldValues> {
   control: Control<T>;
   name: FieldPath<T>;
   defaultValue?: FieldPathValue<T, FieldPath<T>>;
@@ -39,11 +40,10 @@ interface FormSelectFieldProps<T extends FieldValues = FieldValues> {
   hint?: string;
 }
 
-const FormSelectField = <T extends FieldValues>({
+const FormMultiSelectField = <T extends FieldValues>({
   control,
   name,
   options,
-  placeholder = "Select an option",
   label,
   defaultValue,
   required = false,
@@ -53,18 +53,17 @@ const FormSelectField = <T extends FieldValues>({
   // Styling
   labelClassName,
   containerClassName = "",
-  selectClassName,
   errorClassName,
   requiredClassName,
   hint,
 
-  ...selectProps
-}: FormSelectFieldProps<T>) => {
+  ...multiSelectProps
+}: FormMultiSelectFieldProps<T>) => {
   return (
     <Controller
       control={control}
       name={name}
-      defaultValue={defaultValue}
+      defaultValue={defaultValue || ([] as FieldPathValue<T, FieldPath<T>>)}
       render={({ field, fieldState: { error } }) => {
         const isError = !!error?.message;
         return (
@@ -83,22 +82,17 @@ const FormSelectField = <T extends FieldValues>({
               </Label>
             </Show>
 
-            {/* Select Container */}
+            {/* MultiSelect Container */}
             <div className="flex-1">
               {loading ? (
                 <div className="h-11 w-full rounded-lg border border-gray-300 bg-gray-100 animate-pulse dark:bg-gray-800 dark:border-gray-700" />
               ) : (
-                <Select
-                  {...field}
-                  {...selectProps}
-                  options={options}
-                  placeholder={placeholder}
-                  value={field.value || ""}
+                <MultiSelect
+                  {...multiSelectProps}
+                  options={options.map(opt => ({ ...opt, selected: false }))}
+                  value={field.value || []}
                   onChange={field.onChange}
                   disabled={disabled}
-                  error={isError}
-                  hint={hint}
-                  className={cn(selectClassName)}
                 />
               )}
 
@@ -113,6 +107,13 @@ const FormSelectField = <T extends FieldValues>({
                   {error?.message}
                 </p>
               </Show>
+
+              {/* Hint Message */}
+              <Show when={!!hint && !isError}>
+                <p className="mt-1.5 text-xs text-gray-500 dark:text-gray-400">
+                  {hint}
+                </p>
+              </Show>
             </div>
           </div>
         );
@@ -121,4 +122,4 @@ const FormSelectField = <T extends FieldValues>({
   );
 };
 
-export default FormSelectField;
+export default FormMultiSelectField;

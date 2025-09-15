@@ -32,7 +32,7 @@ const sortOrderOptions = [
   { value: "DESC", label: "Descending" },
 ];
 
-const ProductFilterFormUI = () => {
+const ProductInventoryFilterFormUI = () => {
   const { control } = useFormContext();
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -112,4 +112,4 @@ const ProductFilterFormUI = () => {
   );
 };
 
-export default ProductFilterFormUI;
+export default ProductInventoryFilterFormUI;
