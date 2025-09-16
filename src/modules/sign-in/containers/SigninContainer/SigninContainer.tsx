@@ -1,4 +1,4 @@
-import { SigninActionUI, SigninHeaderUI } from "../../components";
+import { SigninHeaderUI } from "../../components";
 import SigninFormContainer from "../SigninFormContainer";
 
 const SigninContainer = () => {
@@ -6,7 +6,6 @@ const SigninContainer = () => {
     <div className="flex flex-col flex-1 lg:w-1/2 w-full">
       <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
         <SigninHeaderUI />
-        <SigninActionUI />
         <SigninFormContainer />
       </div>
     </div>

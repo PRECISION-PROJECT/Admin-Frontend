@@ -15,3 +15,31 @@ export type GetProductListParams = {
   sortOrder?: string;
   includeCategory?: boolean;
 } & CommonRequestType;
+
+export type CreateProductParams = {
+  name: string;
+  description?: string;
+  price: number;
+  salePrice?: number;
+  sku: string;
+  type: string;
+  status: string;
+  categoryId?: string;
+  imageUrl?: string;
+  images?: string[];
+  stockQuantity?: number;
+  unit?: string;
+  weight?: number;
+  length?: number;
+  width?: number;
+  height?: number;
+  material?: string;
+  finish?: string;
+  color?: string;
+  slug: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  keywords?: string[];
+  sortOrder?: number;
+  isFeatured?: boolean;
+};

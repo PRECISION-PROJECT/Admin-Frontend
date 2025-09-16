@@ -1,7 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
-import { GetProductListParams } from "./request.dto";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { createProduct, getProductFeatureList, getProductList } from "./request";
+import { CreateProductParams, GetProductListParams } from "./request.dto";
 import { GetProductListResponse } from "./response.dto";
-import { getProductList, getProductFeatureList } from "./request";
 
 export const useGetProductList = (
   params: GetProductListParams,
@@ -28,5 +28,12 @@ export const useGetProductFeatureList = (
     queryKey: ["product-feature-list", params],
     queryFn: ({ signal }) => getProductFeatureList(params, signal),
     ...queryParams,
+  });
+};
+
+export const useCreateProduct = () => {
+  return useMutation({
+    mutationKey: ["create-product"],
+    mutationFn: (data: CreateProductParams) => createProduct(data),
   });
 };

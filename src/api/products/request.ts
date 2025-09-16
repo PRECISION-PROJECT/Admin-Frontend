@@ -1,6 +1,6 @@
 import httpInstance from "../http-instance";
-import { GetProductListParams } from "./request.dto";
-import { GetProductListResponse } from "./response.dto";
+import { GetProductListParams, CreateProductParams } from "./request.dto";
+import { GetProductListResponse, Product } from "./response.dto";
 
 export const getProductList = (
   params: GetProductListParams,
@@ -17,5 +17,14 @@ export const getProductFeatureList = (
 ) => {
   return httpInstance
     .get<GetProductListResponse>("/products/featured", { params, signal })
+    .then((res) => res);
+};
+
+export const createProduct = (
+  data: CreateProductParams,
+  signal?: AbortSignal
+) => {
+  return httpInstance
+    .post<Product>("/products", data, { signal })
     .then((res) => res);
 };

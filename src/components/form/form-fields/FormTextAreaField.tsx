@@ -10,21 +10,19 @@ import type {
 import { Controller } from "react-hook-form";
 
 import Show from "@/components/common/Show";
-import Input from "@/components/form/input/InputField";
-import Label from "@/components/form/Label";
+import TextArea from "@/components/form/input/TextArea";
 import { cn } from "@/utils/cn";
 
-type InputProps = React.ComponentProps<typeof Input>;
-
-interface FormTextFieldProps<T extends FieldValues = FieldValues>
-  extends Omit<InputProps, "error"> {
+interface FormTextAreaFieldProps<T extends FieldValues = FieldValues> {
   control: Control<T>;
   name: FieldPath<T>;
   defaultValue?: FieldPathValue<T, FieldPath<T>>;
   label?: string;
+  placeholder?: string;
   hint?: string;
   required?: boolean;
   loading?: boolean;
+  rows?: number;
 
   // Styling props
   labelClassName?: HTMLAttributes<HTMLLabelElement>["className"];
@@ -35,14 +33,15 @@ interface FormTextFieldProps<T extends FieldValues = FieldValues>
   hintClassName?: string;
 }
 
-const FormTextField = <T extends FieldValues>({
+const FormTextAreaField = <T extends FieldValues>({
   control,
   name,
   label,
+  placeholder,
   hint,
-  defaultValue,
   required = false,
   loading = false,
+  rows = 3,
 
   // Styling
   labelClassName,
@@ -52,21 +51,19 @@ const FormTextField = <T extends FieldValues>({
   requiredClassName,
   hintClassName,
 
-  // All other Input props
-  ...inputProps
-}: FormTextFieldProps<T>) => {
+  ...textAreaProps
+}: FormTextAreaFieldProps<T>) => {
   return (
     <Controller
       control={control}
       name={name}
-      defaultValue={defaultValue}
       render={({ field, fieldState: { error } }) => {
         const isError = !!error?.message;
         return (
           <div className={cn("flex flex-col gap-y-2", containerClassName)}>
             {/* Label */}
             <Show when={!!label}>
-              <Label className={labelClassName}>
+              <label className={labelClassName}>
                 <span className="flex items-center gap-1">
                   {label}
                   {required && (
@@ -75,19 +72,23 @@ const FormTextField = <T extends FieldValues>({
                     </span>
                   )}
                 </span>
-              </Label>
+              </label>
             </Show>
 
-            {/* Input Container */}
+            {/* TextArea Container */}
             <div className="flex-1">
               {loading ? (
-                <div className="h-11 w-full rounded-lg border border-gray-300 bg-gray-100 animate-pulse dark:bg-gray-800 dark:border-gray-700" />
+                <div className="h-20 w-full rounded border border-gray-300 bg-gray-100 animate-pulse dark:bg-gray-800 dark:border-gray-700" />
               ) : (
-                <Input
+                <TextArea
                   {...field}
-                  {...inputProps}
-                  error={isError}
-                  className={cn(inputClassName, inputProps.className)}
+                  {...textAreaProps}
+                  placeholder={placeholder}
+                  rows={rows}
+                  className={cn(
+                    isError && "border-error-500 focus:border-error-500 focus:ring-error-500",
+                    inputClassName
+                  )}
                 />
               )}
 
@@ -117,4 +118,5 @@ const FormTextField = <T extends FieldValues>({
   );
 };
 
-export default FormTextField;
+export default FormTextAreaField;
+
