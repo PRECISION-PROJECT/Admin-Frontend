@@ -1,3 +1,5 @@
+"use client"
+import { useOrderAnalyticsQuery } from "@/api/reports";
 import Image from "next/image";
 import Button from "../ui/button/Button";
 import {
@@ -9,83 +11,107 @@ import {
 } from "../ui/table";
 
 // Define the TypeScript interface for the table rows
-interface Product {
-  id: number; // Unique identifier for each product
-  name: string; // Product name
-  category: string; // Category of the product
-  country: string; // Price of the product (as a string with currency symbol)
-  cr: string; // URL or path to the product image
+interface OrderItem {
+  id: number;
+  name: string;
+  category: string;
+  country: string;
+  cr: string;
   value: string;
 }
 
-// Define the table data using the interface
-const tableData: Product[] = [
-  {
-    id: 1,
-    name: "TailGrids",
-    category: "UI Kits",
-    country: "/images/country/country-01.svg",
-    cr: "Dashboard",
-    value: "12,499", // Replace with actual image URL
-  },
-  {
-    id: 2,
-    name: "GrayGrids",
-    category: "Templates",
-    country: "/images/country/country-02.svg",
-    cr: "Dashboard",
-    value: "5498", // Replace with actual image URL
-  },
-  {
-    id: 3,
-    name: "Uideck",
-    category: "Templates",
-    country: "/images/country/country-03.svg",
-    cr: "Dashboard",
-    value: "4621", // Replace with actual image URL
-  },
-  {
-    id: 4,
-    name: "FormBold",
-    category: "SaaS",
-    country: "/images/country/country-04.svg",
-    cr: "Dashboard",
-    value: "13843", // Replace with actual image URL
-  },
-  {
-    id: 5,
-    name: "NextAdmin",
-    category: "Templates",
-    country: "/images/country/country-05.svg",
-    cr: "Dashboard",
-    value: "7523", // Replace with actual image URL
-  },
-  {
-    id: 6,
-    name: "Form Builder",
-    category: "Templates",
-    country: "/images/country/country-06.svg",
-    cr: "Dashboard",
-    value: "1,377", // Replace with actual image URL
-  },
-  {
-    id: 7,
-    name: "AyroUI",
-    category: "Templates",
-    country: "/images/country/country-07.svg",
-    cr: "Dashboard",
-    value: "599,00", // Replace with actual image URL
-  },
-];
-
 export default function RecentOrderAnalytics() {
+  const { data: orderData, isLoading, error } = useOrderAnalyticsQuery();
+
+  // Fallback data for display
+  const fallbackData: OrderItem[] = [
+    {
+      id: 1,
+      name: "TailGrids",
+      category: "UI Kits",
+      country: "/images/country/country-01.svg",
+      cr: "Dashboard",
+      value: "12,499",
+    },
+    {
+      id: 2,
+      name: "GrayGrids",
+      category: "Templates",
+      country: "/images/country/country-02.svg",
+      cr: "Dashboard",
+      value: "5498",
+    },
+    {
+      id: 3,
+      name: "Uideck",
+      category: "Templates",
+      country: "/images/country/country-03.svg",
+      cr: "Dashboard",
+      value: "4621",
+    },
+    {
+      id: 4,
+      name: "FormBold",
+      category: "SaaS",
+      country: "/images/country/country-04.svg",
+      cr: "Dashboard",
+      value: "13843",
+    },
+    {
+      id: 5,
+      name: "NextAdmin",
+      category: "Templates",
+      country: "/images/country/country-05.svg",
+      cr: "Dashboard",
+      value: "7523",
+    },
+  ];
+
+  // Use API data or fallback data
+  const displayData = orderData && orderData.data.ordersByMonth.length > 0
+    ? orderData.data.ordersByMonth.slice(0, 5).map((order, index) => ({
+        id: index + 1,
+        name: order.month,
+        category: "Orders",
+        country: "/images/country/country-01.svg", // Default country image
+        cr: "Analytics",
+        value: order.revenue.toLocaleString(),
+      }))
+    : fallbackData;
+
+  if (isLoading) {
+    return (
+      <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
+        <div className="px-4 pt-4 sm:px-6">
+          <div className="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="h-6 bg-gray-200 rounded dark:bg-gray-700 w-32 animate-pulse"></div>
+            <div className="flex gap-3">
+              <div className="h-8 bg-gray-200 rounded dark:bg-gray-700 w-16 animate-pulse"></div>
+              <div className="h-8 bg-gray-200 rounded dark:bg-gray-700 w-16 animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+        <div className="p-6">
+          <div className="space-y-3">
+            {Array.from({ length: 5 }).map((_, index) => (
+              <div key={index} className="flex justify-between items-center">
+                <div className="h-4 bg-gray-200 rounded dark:bg-gray-700 w-32 animate-pulse"></div>
+                <div className="h-4 bg-gray-200 rounded dark:bg-gray-700 w-16 animate-pulse"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white  dark:border-white/[0.05] dark:bg-white/[0.03] ">
       <div className="px-4 pt-4 sm:px-6">
         <div className="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h3 className="text-lg font-semibold text-gray-800 dark:text-white/90">
-              Recent Orders
+              {orderData ? "Order Analytics" : "Recent Orders"}
             </h3>
           </div>
 
@@ -144,7 +170,7 @@ export default function RecentOrderAnalytics() {
                   isHeader
                   className="px-4 py-3 font-medium text-gray-500 sm:px-6 text-start text-theme-xs dark:text-gray-400"
                 >
-                  Products
+                  {orderData ? "Month" : "Products"}
                 </TableCell>
                 <TableCell
                   isHeader
@@ -168,7 +194,7 @@ export default function RecentOrderAnalytics() {
                   isHeader
                   className="px-4 py-3 font-medium text-gray-500 sm:px-6 text-start text-theme-xs dark:text-gray-400"
                 >
-                  Value
+                  {orderData ? "Revenue" : "Value"}
                 </TableCell>
               </TableRow>
             </TableHeader>
@@ -176,18 +202,18 @@ export default function RecentOrderAnalytics() {
             {/* Table Body */}
 
             <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-              {tableData.map((product) => (
-                <TableRow key={product.id}>
+              {displayData.map((item) => (
+                <TableRow key={item.id}>
                   <TableCell className="px-4 py-3 font-medium text-gray-800 sm:px-6 text-start text-theme-sm dark:text-white/90">
-                    {product.name}
+                    {item.name}
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 sm:px-6 text-start text-theme-sm dark:text-gray-400">
-                    {product.category}
+                    {item.category}
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 sm:px-6 text-start text-theme-sm dark:text-gray-400">
                     <div className="w-5 h-5 overflow-hidden rounded-full">
                       <Image
-                        src={product.country}
+                        src={item.country}
                         className="w-5 h-5 rounded-full"
                         alt="country"
                         width={20}
@@ -196,10 +222,10 @@ export default function RecentOrderAnalytics() {
                     </div>
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 sm:px-6 text-start text-theme-sm dark:text-gray-400">
-                    {product.cr}
+                    {item.cr}
                   </TableCell>
                   <TableCell className="px-4 text-theme-sm sm:px-6 text-start text-success-600">
-                    ${product.value}
+                    ${item.value}
                   </TableCell>
                 </TableRow>
               ))}

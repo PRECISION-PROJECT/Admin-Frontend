@@ -1,11 +1,13 @@
 "use client";
+import { useAnalyticsPagesQuery } from "@/api/analytics";
+import { MoreDotIcon } from "@/icons";
 import React, { useState } from "react";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
-import { MoreDotIcon } from "@/icons";
 
 export default function TopPages() {
   const [isOpen, setIsOpen] = useState(false);
+  const { data: topPages, isLoading, error } = useAnalyticsPagesQuery();
 
   function toggleDropdown() {
     setIsOpen(!isOpen);
@@ -14,6 +16,14 @@ export default function TopPages() {
   function closeDropdown() {
     setIsOpen(false);
   }
+
+  const formatNumber = (num: number) => {
+    if (num >= 1000) {
+      return (num / 1000).toFixed(1) + 'K';
+    }
+    return num.toString();
+  };
+
   return (
     <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
       <div className="flex items-start justify-between">
@@ -54,48 +64,41 @@ export default function TopPages() {
           </span>
         </div>
 
-        <div className="flex items-center justify-between py-3 border-b border-gray-100 dark:border-gray-800">
-          <span className="text-gray-500 text-theme-sm dark:text-gray-400">
-            tailadmin.com
-          </span>
-          <span className="text-right text-gray-500 text-theme-sm dark:text-gray-400">
-            4.7K
-          </span>
-        </div>
-
-        <div className="flex items-center justify-between py-3 border-b border-gray-100 dark:border-gray-800">
-          <span className="text-gray-500 text-theme-sm dark:text-gray-400">
-            preview.tailadmin.com
-          </span>
-          <span className="text-right text-gray-500 text-theme-sm dark:text-gray-400">
-            3.4K
-          </span>
-        </div>
-
-        <div className="flex items-center justify-between py-3 border-b border-gray-100 dark:border-gray-800">
-          <span className="text-gray-500 text-theme-sm dark:text-gray-400">
-            docs.tailadmin.com
-          </span>
-          <span className="text-right text-gray-500 text-theme-sm dark:text-gray-400">
-            2.9K
-          </span>
-        </div>
-
-        <div className="flex items-center justify-between py-3 border-b border-gray-100 dark:border-gray-800">
-          <span className="text-gray-500 text-theme-sm dark:text-gray-400">
-            tailadmin.com/componetns
-          </span>
-          <span className="text-right text-gray-500 text-theme-sm dark:text-gray-400">
-            1.5K
-          </span>
-        </div>
+        {isLoading ? (
+          // Loading skeleton
+          Array.from({ length: 4 }).map((_, index) => (
+            <div key={index} className="flex items-center justify-between py-3 border-b border-gray-100 dark:border-gray-800">
+              <div className="h-4 bg-gray-200 rounded dark:bg-gray-700 w-32 animate-pulse"></div>
+              <div className="h-4 bg-gray-200 rounded dark:bg-gray-700 w-12 animate-pulse"></div>
+            </div>
+          ))
+        ) : error || !topPages ? (
+          <div className="text-center py-8 text-red-500">
+            Failed to load top pages data
+          </div>
+        ) : topPages.data.length === 0 ? (
+          <div className="text-center py-8 text-gray-500">
+            No page data available
+          </div>
+        ) : (
+          topPages.data.slice(0, 4).map((page, index) => (
+            <div key={index} className="flex items-center justify-between py-3 border-b border-gray-100 dark:border-gray-800">
+              <span className="text-gray-500 text-theme-sm dark:text-gray-400">
+                {page.source}
+              </span>
+              <span className="text-right text-gray-500 text-theme-sm dark:text-gray-400">
+                {formatNumber(page.pageviews)}
+              </span>
+            </div>
+          ))
+        )}
       </div>
 
       <a
         href="#"
         className="flex items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white p-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03]"
       >
-        Channels Report
+        Pages Report
         <svg
           className="fill-current"
           width="20"

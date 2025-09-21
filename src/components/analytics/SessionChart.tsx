@@ -1,10 +1,11 @@
 "use client";
 import React, { useState } from "react";
 // import Chart from "react-apexcharts";
+import { useAnalyticsDevicesQuery } from "@/api/analytics";
+import { MoreDotIcon } from "@/icons";
 import { ApexOptions } from "apexcharts";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
-import { MoreDotIcon } from "@/icons";
 
 import dynamic from "next/dynamic";
 
@@ -13,9 +14,20 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
 });
 
 export default function SessionChart() {
+  const [isOpen, setIsOpen] = useState(false);
+  const { data: deviceData, isLoading, error } = useAnalyticsDevicesQuery();
+  // Process device data for chart
+  const processedData = deviceData?.data || [];
+  const chartLabels = processedData.map(device => device.device);
+  const chartSeries = processedData.map(device => device.percentage);
+
+  // Fallback data if no real data
+  const fallbackLabels = ["Desktop", "Mobile", "Tablet"];
+  const fallbackSeries = [45, 65, 25];
+
   const options: ApexOptions = {
     colors: ["#3641f5", "#7592ff", "#dde9ff"],
-    labels: ["Desktop", "Mobile", "Tablet"],
+    labels: chartLabels.length > 0 ? chartLabels : fallbackLabels,
     chart: {
       fontFamily: "Outfit, sans-serif",
       type: "donut",
@@ -94,8 +106,8 @@ export default function SessionChart() {
       },
     ],
   };
-  const series = [45, 65, 25];
-  const [isOpen, setIsOpen] = useState(false);
+
+  const series = chartSeries.length > 0 ? chartSeries : fallbackSeries;
 
   function toggleDropdown() {
     setIsOpen(!isOpen);
@@ -104,6 +116,21 @@ export default function SessionChart() {
   function closeDropdown() {
     setIsOpen(false);
   }
+
+  if (isLoading) {
+    return (
+      <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] sm:p-6">
+        <div className="flex items-center justify-between mb-9">
+          <div className="h-6 bg-gray-200 rounded dark:bg-gray-700 w-40 animate-pulse"></div>
+          <div className="h-6 bg-gray-200 rounded dark:bg-gray-700 w-6 animate-pulse"></div>
+        </div>
+        <div className="flex justify-center">
+          <div className="h-72 w-72 bg-gray-200 rounded-full dark:bg-gray-700 animate-pulse"></div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] sm:p-6">
       <div className="flex items-center justify-between mb-9">

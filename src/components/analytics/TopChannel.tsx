@@ -1,11 +1,13 @@
 "use client";
+import { useAnalyticsChannelsQuery } from "@/api/analytics";
+import { MoreDotIcon } from "@/icons";
 import React, { useState } from "react";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
-import { MoreDotIcon } from "@/icons";
 
 export default function TopChannel() {
   const [isOpen, setIsOpen] = useState(false);
+  const { data: topChannels, isLoading, error } = useAnalyticsChannelsQuery();
 
   function toggleDropdown() {
     setIsOpen(!isOpen);
@@ -14,6 +16,14 @@ export default function TopChannel() {
   function closeDropdown() {
     setIsOpen(false);
   }
+
+  const formatNumber = (num: number) => {
+    if (num >= 1000) {
+      return (num / 1000).toFixed(1) + 'K';
+    }
+    return num.toString();
+  };
+
   return (
     <div className="rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
       <div className="flex items-start justify-between">
@@ -54,41 +64,34 @@ export default function TopChannel() {
           </span>
         </div>
 
-        <div className="flex items-center justify-between py-3 border-b border-gray-100 dark:border-gray-800">
-          <span className="text-gray-500 text-theme-sm dark:text-gray-400">
-            Google
-          </span>
-          <span className="text-right text-gray-500 text-theme-sm dark:text-gray-400">
-            4.7K
-          </span>
-        </div>
-
-        <div className="flex items-center justify-between py-3 border-b border-gray-100 dark:border-gray-800">
-          <span className="text-gray-500 text-theme-sm dark:text-gray-400">
-            Facebook
-          </span>
-          <span className="text-right text-gray-500 text-theme-sm dark:text-gray-400">
-            3.4K
-          </span>
-        </div>
-
-        <div className="flex items-center justify-between py-3 border-b border-gray-100 dark:border-gray-800">
-          <span className="text-gray-500 text-theme-sm dark:text-gray-400">
-            Threads
-          </span>
-          <span className="text-right text-gray-500 text-theme-sm dark:text-gray-400">
-            2.9K
-          </span>
-        </div>
-
-        <div className="flex items-center justify-between py-3 border-b border-gray-100 dark:border-gray-800">
-          <span className="text-gray-500 text-theme-sm dark:text-gray-400">
-            Google
-          </span>
-          <span className="text-right text-gray-500 text-theme-sm dark:text-gray-400">
-            1.5K
-          </span>
-        </div>
+        {isLoading ? (
+          // Loading skeleton
+          Array.from({ length: 4 }).map((_, index) => (
+            <div key={index} className="flex items-center justify-between py-3 border-b border-gray-100 dark:border-gray-800">
+              <div className="h-4 bg-gray-200 rounded dark:bg-gray-700 w-20 animate-pulse"></div>
+              <div className="h-4 bg-gray-200 rounded dark:bg-gray-700 w-12 animate-pulse"></div>
+            </div>
+          ))
+        ) : error || !topChannels ? (
+          <div className="text-center py-8 text-red-500">
+            Failed to load channels data
+          </div>
+        ) : topChannels.data.length === 0 ? (
+          <div className="text-center py-8 text-gray-500">
+            No channel data available
+          </div>
+        ) : (
+          topChannels.data.slice(0, 4).map((channel, index) => (
+            <div key={index} className="flex items-center justify-between py-3 border-b border-gray-100 dark:border-gray-800">
+              <span className="text-gray-500 text-theme-sm dark:text-gray-400">
+                {channel.source}
+              </span>
+              <span className="text-right text-gray-500 text-theme-sm dark:text-gray-400">
+                {formatNumber(channel.visitors)}
+              </span>
+            </div>
+          ))
+        )}
       </div>
 
       <a

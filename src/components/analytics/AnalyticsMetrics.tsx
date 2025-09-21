@@ -1,46 +1,80 @@
+"use client"
+import { useAnalyticsVisitorsQuery } from "@/api/analytics";
 import React from "react";
 import Badge from "../ui/badge/Badge";
 
-const mockData = [
-  {
-    id: 1,
-    title: "Unique Visitors",
-    value: "24.7K",
-    change: "+20%",
-    direction: "up",
-    comparisonText: "Vs last month",
-  },
-  {
-    id: 2,
-    title: "Total Pageviews",
-    value: "55.9K",
-    change: "+4%",
-    direction: "up",
-    comparisonText: "Vs last month",
-  },
-  {
-    id: 3,
-    title: "Bounce Rate",
-    value: "54%",
-    change: "-1.59%",
-    direction: "down",
-    comparisonText: "Vs last month",
-  },
-  {
-    id: 4,
-    title: "Visit Duration",
-    value: "2m 56s",
-    change: "+7%",
-    direction: "up",
-    comparisonText: "Vs last month",
-  },
-];
-
 const AnalyticsMetrics: React.FC = () => {
+  const { data: visitorMetrics, isLoading, error } = useAnalyticsVisitorsQuery();
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 xl:grid-cols-4">
+        {[1, 2, 3, 4].map((id) => (
+          <div
+            key={id}
+            className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] animate-pulse"
+          >
+            <div className="h-4 bg-gray-200 rounded dark:bg-gray-700 mb-3"></div>
+            <div className="h-8 bg-gray-200 rounded dark:bg-gray-700 mb-2"></div>
+            <div className="h-4 bg-gray-200 rounded dark:bg-gray-700 w-20"></div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (error || !visitorMetrics) {
+    return (
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 xl:grid-cols-4">
+        <div className="col-span-full text-center p-5 text-red-500">
+          Failed to load analytics data
+        </div>
+      </div>
+    );
+  }
+
+  const metricsData = [
+    {
+      id: 1,
+      title: "Unique Visitors",
+      value: visitorMetrics.data.uniqueVisitors,
+      change: visitorMetrics.data.uniqueVisitorsChange,
+      direction: visitorMetrics.data.uniqueVisitorsChange.startsWith('+') ? "up" :
+                 visitorMetrics.data.uniqueVisitorsChange.startsWith('-') ? "down" : "neutral",
+      comparisonText: "Vs last month",
+    },
+    {
+      id: 2,
+      title: "Total Pageviews",
+      value: visitorMetrics.data.totalPageviews,
+      change: visitorMetrics.data.pageviewsChange,
+      direction: visitorMetrics.data.pageviewsChange.startsWith('+') ? "up" :
+                 visitorMetrics.data.pageviewsChange.startsWith('-') ? "down" : "neutral",
+      comparisonText: "Vs last month",
+    },
+    {
+      id: 3,
+      title: "Bounce Rate",
+      value: visitorMetrics.data.bounceRate,
+      change: visitorMetrics.data.bounceRateChange,
+      direction: visitorMetrics.data.bounceRateChange.startsWith('-') ? "up" :
+                 visitorMetrics.data.bounceRateChange.startsWith('+') ? "down" : "neutral",
+      comparisonText: "Vs last month",
+    },
+    {
+      id: 4,
+      title: "Visit Duration",
+      value: visitorMetrics.data.visitDuration,
+      change: visitorMetrics.data.visitDurationChange,
+      direction: visitorMetrics.data.visitDurationChange.startsWith('+') ? "up" :
+                 visitorMetrics.data.visitDurationChange.startsWith('-') ? "down" : "neutral",
+      comparisonText: "Vs last month",
+    },
+  ];
+
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 xl:grid-cols-4">
       {/* <!-- Metric Item Start --> */}
-      {mockData.map((item) => (
+      {metricsData.map((item) => (
         <div
           key={item.id}
           className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]"

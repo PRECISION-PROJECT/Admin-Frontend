@@ -1,18 +1,43 @@
 "use client";
 // import Chart from "react-apexcharts";
-import { ApexOptions } from "apexcharts";
-import { Dropdown } from "../ui/dropdown/Dropdown";
-import { DropdownItem } from "../ui/dropdown/DropdownItem";
+import { useAnalyticsDashboardQuery } from "@/api/analytics";
 import { MoreDotIcon } from "@/icons";
+import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
 import { useState } from "react";
+import { Dropdown } from "../ui/dropdown/Dropdown";
+import { DropdownItem } from "../ui/dropdown/DropdownItem";
 
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
 export default function AcquisitionChannelChart() {
-  const series = [
+  const [isOpen, setIsOpen] = useState(false);
+  const { data: dashboardData, isLoading, error } = useAnalyticsDashboardQuery();
+
+  // Process acquisition channel data
+  const acquisitionData = dashboardData?.acquisitionChannels || [];
+
+  // Generate series data from API or use fallback
+  const series = acquisitionData.length > 0 ? [
+    {
+      name: "Direct",
+      data: acquisitionData.map(item => item.direct),
+    },
+    {
+      name: "Referral",
+      data: acquisitionData.map(item => item.referral),
+    },
+    {
+      name: "Organic Search",
+      data: acquisitionData.map(item => item.organic),
+    },
+    {
+      name: "Social",
+      data: acquisitionData.map(item => item.social),
+    },
+  ] : [
     {
       name: "Direct",
       data: [44, 55, 41, 67, 22, 43, 55, 41],
@@ -107,14 +132,24 @@ export default function AcquisitionChannelChart() {
     },
   };
 
-  const [isOpen, setIsOpen] = useState(false);
-
   function toggleDropdown() {
     setIsOpen(!isOpen);
   }
 
   function closeDropdown() {
     setIsOpen(false);
+  }
+
+  if (isLoading) {
+    return (
+      <div className="rounded-2xl border border-gray-200 bg-white px-5 pt-5 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6 sm:pt-6">
+        <div className="flex items-center justify-between mb-4">
+          <div className="h-6 bg-gray-200 rounded dark:bg-gray-700 w-40 animate-pulse"></div>
+          <div className="h-6 bg-gray-200 rounded dark:bg-gray-700 w-6 animate-pulse"></div>
+        </div>
+        <div className="h-80 bg-gray-200 rounded dark:bg-gray-700 animate-pulse"></div>
+      </div>
+    );
   }
 
   return (

@@ -1,15 +1,21 @@
 "use client";
-import React, { useState } from "react";
+import { useAnalyticsDashboardQuery, useAnalyticsRealTimeQuery } from "@/api/analytics";
+import { MoreDotIcon } from "@/icons";
 import { ApexOptions } from "apexcharts";
+import dynamic from "next/dynamic";
+import React, { useState } from "react";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
-import { MoreDotIcon } from "@/icons";
-import dynamic from "next/dynamic";
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
 export default function ActiveUsersChart() {
+  const [isOpen, setIsOpen] = useState(false);
+  const { data: realTimeData, isLoading: realTimeLoading } = useAnalyticsRealTimeQuery();
+  const { data: dashboardData, isLoading: dashboardLoading } = useAnalyticsDashboardQuery();
+
+  const isLoading = realTimeLoading || dashboardLoading;
   const options: ApexOptions = {
     legend: {
       show: false,
@@ -113,15 +119,6 @@ export default function ActiveUsersChart() {
     },
   };
 
-  const series = [
-    {
-      name: "Sales",
-      data: [180, 181, 182, 184, 183, 182, 181, 182, 183, 185, 186, 183],
-    },
-  ];
-
-  const [isOpen, setIsOpen] = useState(false);
-
   function toggleDropdown() {
     setIsOpen(!isOpen);
   }
@@ -129,6 +126,44 @@ export default function ActiveUsersChart() {
   function closeDropdown() {
     setIsOpen(false);
   }
+
+  // Generate chart data from dashboard analytics
+  const chartData = dashboardData?.visitorAnalytics || [];
+  const series = [
+    {
+      name: "Visitors",
+      data: chartData.length > 0 ? chartData.map(item => item.count) :
+        [180, 181, 182, 184, 183, 182, 181, 182, 183, 185, 186, 183], // fallback data
+    },
+  ];
+
+  if (isLoading) {
+    return (
+      <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
+        <div className="flex items-start justify-between">
+          <div className="h-6 bg-gray-200 rounded dark:bg-gray-700 w-32 animate-pulse"></div>
+          <div className="h-6 bg-gray-200 rounded dark:bg-gray-700 w-6 animate-pulse"></div>
+        </div>
+        <div className="mt-6 space-y-4">
+          <div className="h-8 bg-gray-200 rounded dark:bg-gray-700 w-48 animate-pulse"></div>
+          <div className="h-32 bg-gray-200 rounded dark:bg-gray-700 animate-pulse"></div>
+          <div className="flex justify-around">
+            <div className="h-16 bg-gray-200 rounded dark:bg-gray-700 w-16 animate-pulse"></div>
+            <div className="h-16 bg-gray-200 rounded dark:bg-gray-700 w-16 animate-pulse"></div>
+            <div className="h-16 bg-gray-200 rounded dark:bg-gray-700 w-16 animate-pulse"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const activeUsers = realTimeData?.data || {
+    liveVisitors: 0,
+    avgDaily: 0,
+    avgWeekly: "0",
+    avgMonthly: "0"
+  };
+
   return (
     <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
       <div className="flex items-start justify-between">
@@ -170,7 +205,7 @@ export default function ActiveUsersChart() {
           </span>
 
           <span className="font-semibold text-gray-800 activeUsers text-title-sm dark:text-white/90">
-            364
+            {activeUsers.liveVisitors}
           </span>
         </div>
         <span className="block mb-1 text-gray-500 text-theme-sm dark:text-gray-400">
@@ -192,7 +227,7 @@ export default function ActiveUsersChart() {
       <div className="flex items-center justify-center gap-6">
         <div>
           <p className="text-lg font-semibold text-center text-gray-800 dark:text-white/90">
-            224
+            {activeUsers.avgDaily}
           </p>
           <p className="mt-0.5 text-center text-theme-xs text-gray-500 dark:text-gray-400">
             Avg, Daily
@@ -203,7 +238,7 @@ export default function ActiveUsersChart() {
 
         <div>
           <p className="text-lg font-semibold text-center text-gray-800 dark:text-white/90">
-            1.4K
+            {activeUsers.avgWeekly}
           </p>
           <p className="mt-0.5 text-center text-theme-xs text-gray-500 dark:text-gray-400">
             Avg, Weekly
@@ -214,7 +249,7 @@ export default function ActiveUsersChart() {
 
         <div>
           <p className="text-lg font-semibold text-center text-gray-800 dark:text-white/90">
-            22.1K
+            {activeUsers.avgMonthly}
           </p>
           <p className="mt-0.5 text-center text-theme-xs text-gray-500 dark:text-gray-400">
             Avg, Monthly
