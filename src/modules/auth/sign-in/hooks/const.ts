@@ -1,0 +1,1 @@
+/** Add constant if has */

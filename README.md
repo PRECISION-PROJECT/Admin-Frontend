@@ -1,62 +1,68 @@
-# Precision Admin Frontend
+# Platform Frontend
 
-A comprehensive, modern admin dashboard built with Next.js 15, featuring advanced analytics, AI tools, e-commerce management, and enterprise-grade components.
+A modern, scalable Next.js application built with TypeScript, featuring a comprehensive UI component system and robust development tooling.
 
 ## 🚀 Tech Stack
 
 ### Core Framework
-- **Next.js 15.4.3** - React framework with App Router
+- **Next.js 15** - React framework with App Router
 - **React 19** - Latest React with concurrent features
-- **TypeScript 5** - Type-safe development
+- **TypeScript 5.9** - Type-safe development
 
 ### UI & Styling
-- **Tailwind CSS 4.0** - Utility-first CSS framework
-- **ApexCharts** - Advanced data visualization
-- **React Hook Form** - Form handling with validation
-- **Flatpickr** - Date picker component
+- **Tailwind CSS 4.1** - Utility-first CSS framework
+- **Radix UI** - Accessible, unstyled UI primitives
+- **shadcn/ui** - Beautiful, reusable components
+- **Lucide React** - Icon library
+- **next-themes** - Dark/light mode support
 
-### State Management & Data
+### State Management & Data Fetching
 - **Zustand** - Lightweight state management
 - **TanStack Query** - Server state management
-- **Axios** - HTTP client
-
-### Advanced Features
-- **FullCalendar** - Calendar integration
-- **React DnD** - Drag and drop functionality
-- **React Dropzone** - File upload handling
-- **Swiper** - Touch slider component
-- **SimpleBar** - Custom scrollbars
-- **PrismJS** - Code syntax highlighting
+- **React Hook Form** - Form handling with validation
 
 ### Development Tools
-- **ESLint** - Code linting
-- **SVGR** - SVG as React components
-- **PostCSS** - CSS processing
+- **Biome** - Fast linter and formatter
+- **Husky** - Git hooks
+- **lint-staged** - Pre-commit linting
+- **Commitlint** - Conventional commit messages
+
+### Additional Libraries
+- **Axios** - HTTP client
+- **Socket.io Client** - Real-time communication
+- **date-fns & dayjs** - Date manipulation
+- **Sonner** - Toast notifications
+- **Embla Carousel** - Carousel component
+- **Vaul** - Drawer component
 
 ## 📋 Prerequisites
 
-- **Node.js** >= 18 (recommended 20.x or later)
-- **npm** or **yarn** package manager
+- **Node.js** >= 18
+- **pnpm** (recommended) or npm
+- **Git**
 
 ## 🛠️ Getting Started
 
-### 1. Clone & Install
+### 1. Environment Setup
 
-   ```bash
-# Clone the repository
-git clone <repository-url>
-cd Admin-Frontend
-
-# Install dependencies
-   npm install
-   # or
-   yarn install
-
-# Use --legacy-peer-deps if you encounter peer dependency issues
-npm install --legacy-peer-deps
+**For Windows users:**
+```bash
+git config --global core.eol lf
+git config --global core.autocrlf input
 ```
 
-### 2. Environment Configuration
+### 2. Clone & Install
+
+```bash
+# Clone the repository
+git clone <repository-url>
+cd Platform-Frontend
+
+# Install dependencies
+pnpm install
+```
+
+### 3. Environment Configuration
 
 Create a `.env.local` file in the root directory:
 
@@ -65,13 +71,11 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
 
-### 3. Development
+### 4. Development
 
-   ```bash
-# Start development server
-   npm run dev
-   # or
-   yarn dev
+```bash
+# Start development server with Turbopack
+pnpm dev
 
 # Open http://localhost:3000
 ```
@@ -80,81 +84,37 @@ NEXT_PUBLIC_API_URL=http://localhost:8000
 
 ```bash
 # Development
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run start        # Start production server
-npm run lint         # Run ESLint
+pnpm dev          # Start development server with Turbopack
+pnpm build        # Build for production
+pnpm start        # Start production server
+
+# Code Quality
+pnpm lint         # Run Biome linter
+pnpm lint:fix     # Fix linting issues
+pnpm format:check # Check code formatting
+pnpm format:fix   # Fix formatting issues
+pnpm type-check   # Run TypeScript type checking
 ```
 
 ## 🏗️ Project Structure
 
 ```
 src/
-├── app/                    # Next.js App Router pages
-│   ├── (admin)/           # Admin dashboard pages
-│   │   ├── (home)/        # Dashboard home pages
-│   │   ├── (others-pages)/ # Additional pages
-│   │   └── (ui-elements)/ # UI component examples
-│   └── (full-width-pages)/ # Full-width layouts
-├── components/            # Reusable components
-│   ├── ai/               # AI assistant components
-│   ├── analytics/        # Analytics dashboard
-│   ├── charts/           # Chart components
-│   ├── ecommerce/        # E-commerce components
-│   ├── form/             # Form components
-│   ├── ui/               # Base UI components
-│   └── ...               # Feature-specific components
-├── context/              # React contexts
-├── hooks/                # Custom React hooks
-├── layout/               # Layout components
-├── icons/                # SVG icons
-└── utils/                # Utility functions
+├── app/                 # Next.js App Router pages
+├── components/          # Reusable UI components
+│   ├── ui/             # shadcn/ui components
+│   ├── layouts/        # Layout components
+│   └── providers/      # Context providers
+├── hooks/              # Custom React hooks
+├── lib/                # Utility functions
+├── stores/             # Zustand stores
+├── types/              # TypeScript type definitions
+├── utils/              # Helper utilities
+├── styles/             # Global styles
+├── config/             # Configuration files
+├── assets/             # Static assets
+└── api/                # API utilities
 ```
-
-## 🎯 Key Features
-
-### 📊 **Analytics Dashboard**
-- Real-time metrics and KPIs
-- Interactive charts and graphs
-- Data visualization with ApexCharts
-- Customizable dashboard widgets
-
-### 🧠 **AI Assistant Suite**
-- **Text Generator** - AI-powered content creation
-- **Image Generator** - AI image generation tools
-- **Code Generator** - AI code assistance
-- **Video Generator** - AI video creation tools
-
-### 🛍️ **E-commerce Management**
-- Product catalog management
-- Order processing and tracking
-- Invoice generation and management
-- Transaction monitoring
-- Customer relationship management
-
-### 📈 **Business Intelligence**
-- **Analytics Dashboard** - Comprehensive business metrics
-- **CRM Dashboard** - Customer relationship management
-- **Logistics Dashboard** - Supply chain management
-- **Marketing Dashboard** - Campaign analytics
-- **SaaS Dashboard** - Software metrics
-- **Stocks Dashboard** - Financial tracking
-
-### 🔧 **Advanced Components**
-- **Calendar Integration** - FullCalendar implementation
-- **File Manager** - Drag & drop file handling
-- **Chat System** - Real-time messaging
-- **Task Management** - Kanban boards and task lists
-- **Email Client** - Inbox and email management
-- **Support System** - Ticket management
-
-### 🎨 **UI Components**
-- 70+ reusable UI components
-- Form elements with validation
-- Data tables with sorting/filtering
-- Modal dialogs and notifications
-- Progress bars and spinners
-- Charts and data visualization
 
 ## 🐳 Docker Deployment
 
@@ -171,56 +131,55 @@ docker-compose up --build
 
 ```bash
 # Build production image
-docker build -f docker/Dockerfile -t precision-admin .
+docker build -f docker/Dockerfile -t platform-frontend .
 
 # Run container
-docker run -p 3000:3000 precision-admin
+docker run -p 3000:3000 platform-frontend
 ```
 
-## 🎨 Theme & Customization
+## 🎨 UI Components
 
-- **Dark/Light Mode** - Built-in theme switching
-- **Responsive Design** - Mobile-first approach
-- **Customizable Sidebar** - Collapsible navigation
-- **Tailwind CSS** - Utility-first styling
-- **Component Library** - Consistent design system
+This project uses **shadcn/ui** components with a custom design system. Components are located in `src/components/ui/` and can be easily customized through Tailwind CSS.
 
-## 🔧 Configuration
+### Adding New Components
+
+```bash
+# Add a new shadcn/ui component
+pnpm dlx shadcn@latest add button
+```
+
+## 🔧 Configuration Files
 
 - **`next.config.ts`** - Next.js configuration with SVG support
-- **`tailwind.config.js`** - Tailwind CSS configuration
+- **`tailwind.config.ts`** - Tailwind CSS configuration
+- **`biome.json`** - Linting and formatting rules
+- **`components.json`** - shadcn/ui configuration
 - **`tsconfig.json`** - TypeScript configuration
-- **`eslint.config.mjs`** - ESLint rules
 
 ## 🚀 Performance Features
 
-- **Next.js 15** - Latest framework optimizations
-- **App Router** - Modern routing system
-- **Server Components** - Optimized rendering
-- **Image Optimization** - Built-in image handling
-- **Code Splitting** - Automatic bundle optimization
+- **Turbopack** - Fast development bundler
+- **Standalone Output** - Optimized production builds
+- **SVG Components** - Optimized SVG handling
+- **Font Optimization** - Next.js font optimization
+- **Image Optimization** - Built-in image optimization
 
-## 📱 Responsive Design
+## 📱 Features
 
-- **Mobile-First** - Optimized for all devices
-- **Breakpoint System** - Tailwind CSS responsive utilities
-- **Touch-Friendly** - Mobile gesture support
-- **Adaptive Layout** - Dynamic sidebar behavior
-
-## 🔒 Security Features
-
-- **Authentication** - Secure login system
-- **Route Protection** - Protected admin routes
-- **Form Validation** - Client and server-side validation
-- **CSRF Protection** - Built-in security measures
+- ⚡ **Fast Development** - Turbopack for instant refresh
+- 🎨 **Modern UI** - Beautiful, accessible components
+- 🌙 **Dark Mode** - Built-in theme switching
+- 📱 **Responsive** - Mobile-first design
+- 🔒 **Type Safe** - Full TypeScript support
+- 🚀 **Production Ready** - Optimized builds
+- 🐳 **Docker Ready** - Containerized deployment
 
 ## 🤝 Contributing
 
-1. Follow the existing code structure
-2. Use TypeScript for type safety
-3. Follow Tailwind CSS conventions
-4. Test responsive design
-5. Ensure accessibility compliance
+1. Follow the conventional commit format
+2. Run linting and formatting before committing
+3. Ensure all TypeScript types are correct
+4. Test your changes thoroughly
 
 ## 📄 License
 
@@ -228,4 +187,4 @@ This project is licensed under the MIT License.
 
 ---
 
-Built with ❤️ using Next.js 15 and modern web technologies.
+Built with ❤️ using Next.js and modern web technologies.
