@@ -1,6 +1,6 @@
 import { CommonRequestType, IPaginatedResponseType } from "@/types";
-import { IUserResponse } from "../auths";
 import { IAppointment } from "../appointments";
+import { IUserResponse } from "../auths";
 
 export interface IOrderLineItem {
   productId: string;
@@ -53,8 +53,12 @@ export type AddOrderRequest = {
   notes: string;
 };
 
-export type UpdateOrderRequest = AddOrderRequest & {
+export type UpdateOrderRequest = {
+  estimatedDeliveryDate: string;
   id: string;
+  status: string;
+  deliveryAddress: string;
+  notes: string;
 };
 
 export type DeleteOrderRequest = {

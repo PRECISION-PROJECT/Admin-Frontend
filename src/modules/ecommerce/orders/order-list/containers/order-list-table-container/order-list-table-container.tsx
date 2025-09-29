@@ -6,12 +6,14 @@ import { DataTableToolbar } from "@/components/shared/data-table/data-table-tool
 import { useDataTable } from "@/hooks/use-data-table";
 import { useMemo } from "react";
 import { useOrderListTable } from "../../hooks";
+import OrderListDialogContainer from "../order-list-dialog-container";
 import { columns } from "./columns";
 
 const OrderListTableContainer = () => {
-  const { pageCount, orderList, isLoading } = useOrderListTable();
+  const { pageCount, orderList, isLoading, onRefetch, onRowClick } =
+    useOrderListTable();
 
-  const _columns = useMemo(() => columns(), []);
+  const _columns = useMemo(() => columns(onRowClick), []);
 
   const { table } = useDataTable({
     data: orderList,
@@ -26,9 +28,12 @@ const OrderListTableContainer = () => {
   }
 
   return (
-    <DataTable table={table}>
-      <DataTableToolbar table={table} />
-    </DataTable>
+    <>
+      <DataTable table={table}>
+        <DataTableToolbar table={table} />
+      </DataTable>
+      <OrderListDialogContainer onSuccess={onRefetch} />
+    </>
   );
 };
 

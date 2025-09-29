@@ -1,6 +1,7 @@
 "use client";
 
 import { Category } from "@/apis/categories";
+import { IOrder } from "@/apis/orders/types";
 import { Icons } from "@/assets/icons";
 import { DataTableColumnHeader } from "@/components/shared/data-table/data-table-column-header";
 import { Badge } from "@/components/ui/badge";
@@ -15,7 +16,6 @@ import { Column, ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import Image from "next/image";
 import { CellAction } from "./cell-action";
-import { IOrder } from "@/apis/orders/types";
 
 const getStatusColor = (status: string) => {
   switch (status.toLowerCase()) {
@@ -47,7 +47,9 @@ const getPaymentStatusColor = (status: string) => {
   }
 };
 
-export const columns = (): ColumnDef<IOrder>[] => [
+export const columns = (
+  onRowClick: (row: IOrder) => void
+): ColumnDef<IOrder>[] => [
   {
     accessorKey: "id",
     header: ({ column }) => (
@@ -297,7 +299,9 @@ export const columns = (): ColumnDef<IOrder>[] => [
         <div className="flex items-center space-x-2">
           <Icons.calendar className="h-4 w-4" />
           <span className="text-sm">
-            {updatedAt ? format(updatedAt as string, "dd/MM/yyyy HH:mm:ss") : "-"}
+            {updatedAt
+              ? format(updatedAt as string, "dd/MM/yyyy HH:mm:ss")
+              : "-"}
           </span>
         </div>
       );
@@ -306,6 +310,8 @@ export const columns = (): ColumnDef<IOrder>[] => [
   },
   {
     id: "actions",
-    cell: ({ row }) => <CellAction data={row.original} />,
+    cell: ({ row }) => (
+      <CellAction onRowClick={onRowClick} data={row.original} />
+    ),
   },
 ];

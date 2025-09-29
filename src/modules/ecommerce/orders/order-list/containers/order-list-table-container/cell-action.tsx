@@ -16,11 +16,11 @@ import { useRouter } from "next/navigation";
 
 interface CellActionProps {
   data: IOrder;
+  onRowClick: (row: IOrder) => void;
 }
 
-export const CellAction: React.FC<CellActionProps> = ({ data }) => {
+export const CellAction: React.FC<CellActionProps> = ({ onRowClick, data }) => {
   const router = useRouter();
-  const url = ROUTES.ORDER_DETAIL.replace(":id", data.id);
   const detailUrl = ROUTES.ORDER_DETAIL.replace(":id", data.id);
 
   return (
@@ -37,7 +37,10 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           <DropdownMenuItem onClick={() => router.push(detailUrl)}>
             <Icons.view className="mr-2 h-4 w-4" /> Detail
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => router.push(url)}>
+          <DropdownMenuItem
+            disabled={data.status === "delivered"}
+            onClick={() => onRowClick(data)}
+          >
             <Icons.edit className="mr-2 h-4 w-4" /> Update
           </DropdownMenuItem>
         </DropdownMenuContent>
