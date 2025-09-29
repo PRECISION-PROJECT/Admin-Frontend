@@ -1,8 +1,8 @@
 import PageContainer from "@/components/containers/page-container";
 import { Separator } from "@/components/ui/separator";
 import { OrderListHeaderUI } from "./components";
-import OrderListProvider from "./contexts/order-list-context";
 import { OrderListTableContainer } from "./containers";
+import OrderListProvider from "./contexts/order-list-context";
 
 const OrderListModule = () => {
   return (
