@@ -1,15 +1,15 @@
 "use client";
 
 import { useLoginMutation } from "@/apis/auths";
+import { ECookie } from "@/apis/http-instance";
+import { handleToastError } from "@/utils/common";
+import { setCookieData } from "@/utils/cookie";
+import { ROUTES } from "@/utils/routes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { signInSchema, type SignInFormData } from "./validation";
-import { handleToastError } from "@/utils/common";
-import { setCookieData } from "@/utils/cookie";
-import { ECookie } from "@/apis/http-instance";
 import { toast } from "sonner";
-import { ROUTES } from "@/utils/routes";
+import { signInSchema, type SignInFormData } from "./validation";
 
 export const useSignIn = () => {
   const useLoginMutate = useLoginMutation();
@@ -35,7 +35,7 @@ export const useSignIn = () => {
       }
       toast.success("Sign in successfully");
       setTimeout(() => {
-        router.push(ROUTES.PRODUCT_LIST);
+        router.push(ROUTES.REPORT);
       }, 300);
     } catch (error) {
       handleToastError(error);

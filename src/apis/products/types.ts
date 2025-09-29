@@ -32,6 +32,14 @@ export interface IProduct {
   createdAt: string;
   updatedAt: string;
   category?: Category;
+  orderCount?: number;
+  revenue?: number;
+  primaryImage: IProductImage;
+}
+
+export interface IProductImage {
+  id: string;
+  path: string;
 }
 
 export interface CreateProductRequest {
@@ -80,5 +88,5 @@ export interface GetProductListParams extends CommonRequestType {
   material?: string;
   color?: string;
   finish?: string;
-  includeCategory?: boolean
+  includeCategory?: boolean;
 }
