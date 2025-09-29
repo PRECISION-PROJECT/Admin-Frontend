@@ -81,24 +81,18 @@ export const navItems: NavItem[] = [
       },
     ],
   },
-  // {
-  //   title: "Me",
-  //   url: "#",
-  //   icon: "userCircle",
-  //   isActive: true,
-  //   items: [
-  //     {
-  //       title: "Profile",
-  //       url: "/dashboard/profile",
-  //       icon: "userPenIcon",
-  //       shortcut: ["m", "m"],
-  //     },
-  //     {
-  //       title: "Login",
-  //       shortcut: ["l", "l"],
-  //       url: "/",
-  //       icon: "logOutIcon",
-  //     },
-  //   ],
-  // },
+  {
+    title: "Me",
+    url: "#",
+    icon: "userCircle",
+    isActive: true,
+    items: [
+      {
+        title: "Profile",
+        url: "/profile",
+        icon: "userPenIcon",
+        shortcut: ["m", "m"],
+      },
+    ],
+  },
 ];

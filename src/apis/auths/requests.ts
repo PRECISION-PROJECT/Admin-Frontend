@@ -16,6 +16,14 @@ export const getMe = async (signal?: AbortSignal): Promise<IUserResponse> => {
     .then((res) => res);
 };
 
+export const getProfile = async (
+  signal?: AbortSignal
+): Promise<IUserResponse> => {
+  return httpInstance
+    .get<IUserResponse>(KEYS.AUTH_PROFILE, { signal })
+    .then((res) => res);
+};
+
 export const loginRequest = async (
   body: ILoginRequest
 ): Promise<ILoginResponse> => {

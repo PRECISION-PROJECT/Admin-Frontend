@@ -1,21 +1,22 @@
+import { IAxiosResponse } from "@/types/axios";
 import { useMutation, useQuery, UseQueryOptions } from "@tanstack/react-query";
+import { KEYS } from "./keys";
 import {
   forgotPasswordRequest,
   getMe,
+  getProfile,
   loginRequest,
   logoutRequest,
   resetPasswordRequest,
 } from "./requests";
-import { KEYS } from "./keys";
 import {
-  IUserResponse,
-  ILoginResponse,
-  ILoginRequest,
   IForgotPasswordRequest,
+  ILoginRequest,
+  ILoginResponse,
   ILogoutRequest,
   IResetPasswordRequest,
+  IUserResponse,
 } from "./types";
-import { IAxiosResponse } from "@/types/axios";
 
 export const useGetMe = (
   options: Omit<UseQueryOptions<IUserResponse, Error>, "queryKey">
@@ -23,6 +24,16 @@ export const useGetMe = (
   return useQuery<IUserResponse, Error>({
     queryKey: [KEYS.AUTH_ME],
     queryFn: ({ signal }) => getMe(signal),
+    ...options,
+  });
+};
+
+export const useGetProfile = (
+  options: Omit<UseQueryOptions<IUserResponse, Error>, "queryKey">
+) => {
+  return useQuery<IUserResponse, Error>({
+    queryKey: [KEYS.AUTH_PROFILE],
+    queryFn: ({ signal }) => getProfile(signal),
     ...options,
   });
 };
