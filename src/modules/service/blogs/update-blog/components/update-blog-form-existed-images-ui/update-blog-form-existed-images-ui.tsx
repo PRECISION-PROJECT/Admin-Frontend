@@ -1,8 +1,8 @@
 import { InputFileDropzoneUploadField } from "@/components/form-field";
+import ImageLoader from "@/components/ui/image-loader";
+import { ImageZoom } from "@/components/ui/shadcn-io/image-zoom";
 import { useFormContext } from "react-hook-form";
 import { UpdateBlogFormData } from "../../hooks";
-import { ImageZoom } from "@/components/ui/shadcn-io/image-zoom";
-import ImageLoader from "@/components/ui/image-loader";
 
 type Props = {
   isPending: boolean;
@@ -19,13 +19,13 @@ const UpdateBlogFormExistedImagesUI = ({ isPending }: Props) => {
         <h3 className="font-medium text-sm text-muted-foreground mb-2">
           Primary Image
         </h3>
-        {existedMainImage ? (
+        {existedMainImage?.url ? (
           <ImageZoom>
             <ImageLoader
-              alt={existedMainImage}
+              alt={existedMainImage.url}
               className="h-auto w-32"
               height={800}
-              src={existedMainImage}
+              src={existedMainImage.url}
               unoptimized
               width={1200}
             />
@@ -44,12 +44,12 @@ const UpdateBlogFormExistedImagesUI = ({ isPending }: Props) => {
         {existedAdditionalImages && existedAdditionalImages.length > 0 ? (
           <div className="grid grid-cols-2 gap-2">
             {existedAdditionalImages.map((image, index) => (
-              <ImageZoom key={`${index}-${image}`}>
+              <ImageZoom key={`${index}-${image.url}`}>
                 <ImageLoader
                   alt={`${image} - Image ${index + 1}`}
                   className="h-auto w-32"
                   height={800}
-                  src={image}
+                  src={image.url}
                   unoptimized
                   width={1200}
                 />
