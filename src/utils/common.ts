@@ -1,12 +1,13 @@
+import { EMedia } from "@/constants/common.enum";
+import { IMedia } from "@/types";
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
 import timezone from "dayjs/plugin/timezone";
 import { toast } from "sonner";
-import { FILE_FORMAT, NUMBER_FORMAT_LOOK_UP } from "./const";
 import { v4 as uuid } from "uuid";
-import { EMedia, IMedia } from "@/types";
+import { FILE_FORMAT, NUMBER_FORMAT_LOOK_UP } from "./const";
 
 dayjs.extend(timezone);
 dayjs.extend(relativeTime);
@@ -158,5 +159,20 @@ export const initMediaFromUrl = (url: string): IMedia => {
     id: uuid(),
     url,
     type: url?.includes(EMedia.Video) ? EMedia.Video : EMedia.Image,
+  };
+};
+
+export const filterImageOrVideo = (file: File) => {
+  return file.type.split("/")[0].includes("image")
+    ? EMedia.Image
+    : EMedia.Video;
+};
+
+export const generateImageMedia = (file: File): IMedia => {
+  return {
+    id: uuid(),
+    url: URL.createObjectURL(file),
+    type: filterImageOrVideo(file),
+    file: file,
   };
 };

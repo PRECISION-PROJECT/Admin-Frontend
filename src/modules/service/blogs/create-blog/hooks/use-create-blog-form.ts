@@ -2,6 +2,7 @@
 
 import { useCreateBlogMutation } from "@/apis/blogs";
 import { useUploadFileMutation } from "@/apis/uploads";
+import { IMedia } from "@/types";
 import { handleToastError } from "@/utils/common";
 import { ROUTES } from "@/utils/routes";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -33,7 +34,19 @@ export const useCreateBlogForm = () => {
   const uploadImage = async (image: File) => {
     try {
       const res = await uploadFileMutation.mutateAsync({ file: image });
-      return res.file.path;
+      return res.file.id;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const generateAdditionalImages = async (images?: IMedia[]) => {
+    if (!images) return [];
+    try {
+      const uploadImages = await Promise.all(
+        images?.map((image) => uploadImage(image.file!))
+      );
+      return uploadImages;
     } catch (error) {
       throw error;
     }
@@ -43,11 +56,11 @@ export const useCreateBlogForm = () => {
     if (isPending) return;
 
     const { imageUrl, images, ...rest } = data;
+
     try {
-      const uploadMainImage = await uploadImage(imageUrl[0]);
-      const uploadImages: string[] = images
-        ? await Promise.all(images?.map((image: File) => uploadImage(image)))
-        : [];
+      const uploadMainImage = await uploadImage(imageUrl[0].file!);
+      if (!uploadMainImage) return;
+      const uploadImages = await generateAdditionalImages(images);
 
       const addBlogData = {
         ...rest,

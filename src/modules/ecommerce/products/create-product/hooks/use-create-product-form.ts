@@ -1,8 +1,12 @@
 "use client";
 
 import { useGetCategoryTree } from "@/apis/categories";
-import { CreateProductRequest, useCreateProductMutation } from "@/apis/products";
+import {
+  CreateProductRequest,
+  useCreateProductMutation,
+} from "@/apis/products";
 import { useUploadFileMutation } from "@/apis/uploads";
+import { IMedia } from "@/types";
 import { handleToastError } from "@/utils/common";
 import { ROUTES } from "@/utils/routes";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -32,7 +36,7 @@ export const useCreateProductForm = () => {
   const formMethods = useForm<CreateProductFormData>({
     resolver: zodResolver(productFormSchema),
     defaultValues: defaultValues,
-    mode: "onChange"
+    mode: "onChange",
   });
 
   const categoryOptions = useMemo(() => {
@@ -67,10 +71,22 @@ export const useCreateProductForm = () => {
   const uploadImage = async (image: File) => {
     try {
       const res = await uploadFileMutation.mutateAsync({ file: image });
-      return res.file.path;
+      return res.file.id;
     } catch (error) {
       handleToastError(error);
       return null;
+    }
+  };
+
+  const generateAdditionalImages = async (images?: IMedia[]) => {
+    if (!images) return [];
+    try {
+      const uploadImages = await Promise.all(
+        images?.map((image) => uploadImage(image.file!))
+      );
+      return uploadImages;
+    } catch (error) {
+      throw error;
     }
   };
 
@@ -80,19 +96,19 @@ export const useCreateProductForm = () => {
     const { imageUrl, images, ...rest } = data;
 
     try {
-      const uploadMainImage = await uploadImage(imageUrl[0]);
+      const uploadMainImage = await uploadImage(imageUrl[0].file!);
       if (!uploadMainImage) return;
-      const uploadImages = images
-        ? await Promise.all(images?.map((image: File) => uploadImage(image)))
-        : [];
+      const uploadImages = await generateAdditionalImages(images);
       const payload = {
         ...rest,
-        imageUrl: uploadMainImage,
-        images: uploadImages,
+        primaryImageId: uploadMainImage,
+        imageIds: uploadImages,
         type: memorizedCategories.groupCategoryById[rest.categoryId],
       } as CreateProductRequest;
       await addProductMutation.mutateAsync(payload);
-      toast.success("Product created successfully, redirecting to product list");
+      toast.success(
+        "Product created successfully, redirecting to product list"
+      );
       setTimeout(() => {
         router.push(ROUTES.PRODUCT_LIST);
       }, 200);

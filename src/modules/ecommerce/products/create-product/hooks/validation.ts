@@ -1,3 +1,4 @@
+import { IMedia } from "@/types";
 import { z } from "zod";
 
 const MAX_FILE_SIZE = 5000000;
@@ -10,35 +11,34 @@ const ACCEPTED_IMAGE_TYPES = [
 
 export const productFormSchema = z.object({
   imageUrl: z
-    .any()
-    .refine((files) => files?.length >= 1, "Image is required.")
-    .refine((files) => files?.length <= 1, "Only 1 image is allowed.")
+    .array(z.custom<IMedia>())
+    .min(1, "Image is required.")
     .refine(
-      (files) => files?.[0]?.size <= MAX_FILE_SIZE,
-      `Max file size is 5MB.`
+      (medias) => medias.every((m) => !m.file || m.file.size <= MAX_FILE_SIZE),
+      "Each file must be 5MB or less"
     )
     .refine(
-      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-      ".jpg, .jpeg, .png and .webp files are accepted."
+      (medias) =>
+        medias.every(
+          (m) => !m.file || ACCEPTED_IMAGE_TYPES.includes(m.file.type)
+        ),
+      "Invalid file type"
     ),
   images: z
-    .any()
-    .optional()
+    .array(z.custom<IMedia>())
+    .max(4, "Maximum 4 images allowed.")
     .refine(
-      (files) => !files || files?.length <= 4,
-      "Maximum 4 images allowed."
+      (medias) => medias.every((m) => !m.file || m.file.size <= MAX_FILE_SIZE),
+      "Each file must be 5MB or less"
     )
     .refine(
-      (files) =>
-        !files || files.every((file: any) => file?.size <= MAX_FILE_SIZE),
-      `Each image must be 5MB or less.`
+      (medias) =>
+        medias.every(
+          (m) => !m.file || ACCEPTED_IMAGE_TYPES.includes(m.file.type)
+        ),
+      "Invalid file type"
     )
-    .refine(
-      (files) =>
-        !files ||
-        files.every((file: any) => ACCEPTED_IMAGE_TYPES.includes(file?.type)),
-      "Only .jpg, .jpeg, .png and .webp files are accepted."
-    ),
+    .optional(),
   name: z.string().min(3, "Product name must be at least 3 characters"),
   description: z.string().min(20, "Description must be at least 20 characters"),
   price: z.number().min(1, "Price must be at least $1"),
@@ -58,7 +58,9 @@ export const productFormSchema = z.object({
   color: z.string().min(2, "Color must be at least 2 characters"),
   slug: z.string().min(3, "Slug must be at least 3 characters"),
   metaTitle: z.string().min(10, "Meta title must be at least 10 characters"),
-  metaDescription: z.string().min(20, "Meta description must be at least 20 characters"),
+  metaDescription: z
+    .string()
+    .min(20, "Meta description must be at least 20 characters"),
   keywords: z.array(z.string()),
   sortOrder: z.number(),
   isFeatured: z.boolean(),
@@ -67,8 +69,8 @@ export const productFormSchema = z.object({
 export type CreateProductFormData = z.infer<typeof productFormSchema>;
 
 export const defaultValues = {
-  imageUrl: undefined,
-  images: undefined,
+  imageUrl: [],
+  images: [],
   name: "",
   description: "",
   price: 0,

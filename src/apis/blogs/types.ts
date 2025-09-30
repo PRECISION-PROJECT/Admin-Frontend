@@ -1,4 +1,4 @@
-import { CommonRequestType, IPaginatedResponseType } from "@/types";
+import { CommonRequestType, IBaseImage, IPaginatedResponseType } from "@/types";
 import { IUserResponse } from "../auths";
 
 export type IBlog = {
@@ -19,8 +19,8 @@ export type IBlog = {
   createdAt: string;
   updatedAt: string;
   author: IUserResponse;
-  imageUrl?: string;
-  images?: string[];
+  primaryImage?: IBaseImage;
+  images?: IBaseImage[];
 };
 
 export type GetBlogListParams = {

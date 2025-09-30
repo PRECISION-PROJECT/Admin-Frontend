@@ -21,13 +21,13 @@ const BlogDetailImagesUI = ({ blog }: Props) => {
                 Feature Image
               </h3>
               <div>
-                {blog?.imageUrl ? (
+                {blog?.primaryImage?.path ? (
                   <ImageZoom>
                     <ImageLoader
                       alt={blog?.title}
                       className="h-auto w-32"
                       height={800}
-                      src={blog?.imageUrl!}
+                      src={blog?.primaryImage?.path!}
                       unoptimized
                       width={1200}
                     />
@@ -49,12 +49,12 @@ const BlogDetailImagesUI = ({ blog }: Props) => {
               {blog?.images && blog?.images.length > 0 ? (
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {blog?.images.map((image, index) => (
-                    <ImageZoom key={`${index}-${image}`}>
+                    <ImageZoom key={`${index}-${image.id}`}>
                       <ImageLoader
                         alt={`${blog?.title} - Image ${index + 1}`}
                         className="h-auto w-32"
                         height={800}
-                        src={image}
+                        src={image.path!}
                         unoptimized
                         width={1200}
                       />

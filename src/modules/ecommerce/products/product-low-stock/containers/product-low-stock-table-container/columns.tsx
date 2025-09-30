@@ -42,13 +42,13 @@ export const columns = (): ColumnDef<IProduct>[] => [
     enableColumnFilter: true,
   },
   {
-    accessorKey: "imageUrl",
+    accessorKey: "primaryImage`",
     header: ({ column }: { column: Column<IProduct, unknown> }) => (
       <DataTableColumnHeader column={column} title="Image" />
     ),
     cell: ({ row }) => {
       const origin = row.original;
-      const imageUrl = origin.imageUrl;
+      const imageUrl = origin.primaryImage?.path;
       const firstName = origin.name;
       if (!imageUrl) {
         return (

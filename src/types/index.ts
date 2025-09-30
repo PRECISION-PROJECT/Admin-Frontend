@@ -1,4 +1,5 @@
 import { Icons } from "@/assets/icons";
+import { EMedia } from "@/constants/common.enum";
 import type { FC, PropsWithChildren, SVGProps } from "react";
 
 export type TOptional<T> = T | undefined;
@@ -82,14 +83,14 @@ export type CommonRequestType = {
   search?: string;
 };
 
-export enum EMedia {
-  Image = "image",
-  Video = "video",
-}
-
 export interface IMedia {
   id?: string;
   url: string;
   type?: EMedia;
   file?: File | null;
+}
+
+export interface IBaseImage {
+  id: string;
+  path: string;
 }

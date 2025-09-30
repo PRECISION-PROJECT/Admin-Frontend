@@ -8,13 +8,15 @@ import Dropzone, {
 } from "react-dropzone";
 import { toast } from "sonner";
 
+import { Icons } from "@/assets/icons";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useControllableState } from "@/hooks/use-controllable-state";
 import { cn } from "@/lib/utils";
-import { Icons } from "@/assets/icons";
-import { formatBytes } from "@/utils/common";
+import { IMedia } from "@/types";
+import { formatBytes, generateImageMedia } from "@/utils/common";
+import ImageLoader from "./image-loader";
 import { ImageZoom } from "./shadcn-io/image-zoom";
 
 export interface InputFileDropzoneProps
@@ -25,7 +27,7 @@ export interface InputFileDropzoneProps
    * @default undefined
    * @example value={files}
    */
-  value?: File[];
+  value?: IMedia[];
 
   /**
    * Function to be called when the value changes.
@@ -33,7 +35,7 @@ export interface InputFileDropzoneProps
    * @default undefined
    * @example onValueChange={(files) => setFiles(files)}
    */
-  onValueChange?: React.Dispatch<React.SetStateAction<File[]>>;
+  onValueChange?: React.Dispatch<React.SetStateAction<IMedia[]>>;
 
   /**
    * Function to be called when files are uploaded.
@@ -41,7 +43,7 @@ export interface InputFileDropzoneProps
    * @default undefined
    * @example onUpload={(files) => uploadFiles(files)}
    */
-  onUpload?: (files: File[]) => Promise<void>;
+  onUpload?: (files: IMedia[]) => Promise<void>;
 
   /**
    * Progress of the uploaded files.
@@ -127,13 +129,11 @@ export function InputFileDropzone(props: InputFileDropzoneProps) {
         return;
       }
 
-      const newFiles = acceptedFiles.map((file) =>
-        Object.assign(file, {
-          preview: URL.createObjectURL(file),
-        })
+      const newMedia: IMedia[] = acceptedFiles.map((file) =>
+        generateImageMedia(file)
       );
 
-      const updatedFiles = files ? [...files, ...newFiles] : newFiles;
+      const updatedFiles = files ? [...files, ...newMedia] : newMedia;
 
       setFiles(updatedFiles);
 
@@ -176,9 +176,9 @@ export function InputFileDropzone(props: InputFileDropzoneProps) {
   React.useEffect(() => {
     return () => {
       if (!files) return;
-      files.forEach((file) => {
-        if (isFileWithPreview(file)) {
-          URL.revokeObjectURL(file.preview);
+      files.forEach((media) => {
+        if (media.file) {
+          URL.revokeObjectURL(media.url);
         }
       });
     };
@@ -253,9 +253,9 @@ export function InputFileDropzone(props: InputFileDropzoneProps) {
             {files?.map((file, index) => (
               <FileCard
                 key={index}
-                file={file}
+                media={file}
                 onRemove={() => onRemove(index)}
-                progress={progresses?.[file.name]}
+                progress={progresses?.[file.url]}
               />
             ))}
           </div>
@@ -266,34 +266,35 @@ export function InputFileDropzone(props: InputFileDropzoneProps) {
 }
 
 interface FileCardProps {
-  file: File;
+  media: IMedia;
   onRemove: () => void;
   progress?: number;
 }
 
-function FileCard({ file, progress, onRemove }: FileCardProps) {
+function FileCard({ media, progress, onRemove }: FileCardProps) {
   return (
     <div className="relative flex items-center space-x-4">
       <div className="flex flex-1 space-x-4">
-        {isFileWithPreview(file) ? (
-          <ImageZoom className="border">
-            <Image
-              src={file.preview}
-              alt={file.name}
-              width={48}
-              height={48}
-              loading="lazy"
-              className="aspect-square shrink-0 rounded-md object-cover"
-            />
-          </ImageZoom>
+        {media.url ? (
+          <div className="border w-fit shrink-0">
+            <ImageZoom>
+              <ImageLoader
+                src={media.url}
+                alt={media.file?.name ?? media.url}
+                width={48}
+                height={48}
+                className="aspect-square rounded-md object-cover"
+              />
+            </ImageZoom>
+          </div>
         ) : null}
         <div className="flex w-full flex-col gap-2">
           <div className="space-y-px">
             <p className="text-foreground/80 line-clamp-1 text-sm font-medium">
-              {file.name}
+              {media.file?.name ?? media.url}
             </p>
             <p className="text-muted-foreground text-xs">
-              {formatBytes(file.size)}
+              {formatBytes(media.file?.size ?? 0)}
             </p>
           </div>
           {progress ? <Progress value={progress} /> : null}

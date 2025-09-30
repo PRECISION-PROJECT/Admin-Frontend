@@ -33,7 +33,7 @@ const ReportProductsContentUI = ({ data }: Props) => {
                         alt={product.name}
                         className="h-10 w-10"
                         height={800}
-                        src={product?.primaryImage?.path}
+                        src={product?.primaryImage?.path!}
                         unoptimized
                         width={1200}
                       />
@@ -76,7 +76,7 @@ const ReportProductsContentUI = ({ data }: Props) => {
                         alt={product.name}
                         className="h-10 w-10"
                         height={800}
-                        src={product?.primaryImage?.path}
+                        src={product?.primaryImage?.path!}
                         unoptimized
                         width={1200}
                       />

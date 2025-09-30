@@ -12,7 +12,6 @@ export interface IProduct {
   status: string;
   categoryId: string;
   imageUrl: string;
-  images: string[];
   stockQuantity: number;
   unit: string;
   weight: string;
@@ -34,7 +33,8 @@ export interface IProduct {
   category?: Category;
   orderCount?: number;
   revenue?: number;
-  primaryImage: IProductImage;
+  primaryImage?: IProductImage;
+  images?: IProductImage[];
 }
 
 export interface IProductImage {
@@ -51,8 +51,6 @@ export interface CreateProductRequest {
   type: string;
   status: string;
   categoryId: string;
-  imageUrl: string;
-  images: string[];
   stockQuantity: number;
   unit: string;
   weight: number;
@@ -68,6 +66,8 @@ export interface CreateProductRequest {
   keywords: string[];
   sortOrder: number;
   isFeatured: boolean;
+  primaryImageId: string;
+  imageIds: string[];
 }
 
 export interface UpdateProductRequest extends CreateProductRequest {

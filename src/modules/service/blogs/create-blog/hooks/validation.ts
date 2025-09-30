@@ -1,3 +1,4 @@
+import { IMedia } from "@/types";
 import { z } from "zod";
 
 const MAX_FILE_SIZE = 5000000;
@@ -10,35 +11,34 @@ const ACCEPTED_IMAGE_TYPES = [
 
 export const blogFormSchema = z.object({
   imageUrl: z
-    .any()
-    .refine((files) => files?.length >= 1, "Image is required.")
-    .refine((files) => files?.length <= 1, "Only 1 image is allowed.")
+    .array(z.custom<IMedia>())
+    .min(1, "Image is required.")
     .refine(
-      (files) => files?.[0]?.size <= MAX_FILE_SIZE,
-      `Max file size is 5MB.`
+      (medias) => medias.every((m) => !m.file || m.file.size <= MAX_FILE_SIZE),
+      "Each file must be 5MB or less"
     )
     .refine(
-      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-      ".jpg, .jpeg, .png and .webp files are accepted."
+      (medias) =>
+        medias.every(
+          (m) => !m.file || ACCEPTED_IMAGE_TYPES.includes(m.file.type)
+        ),
+      "Invalid file type"
     ),
   images: z
-    .any()
-    .optional()
+    .array(z.custom<IMedia>())
+    .max(4, "Maximum 4 images allowed.")
     .refine(
-      (files) => !files || files?.length <= 4,
-      "Maximum 4 images allowed."
+      (medias) => medias.every((m) => !m.file || m.file.size <= MAX_FILE_SIZE),
+      "Each file must be 5MB or less"
     )
     .refine(
-      (files) =>
-        !files || files.every((file: any) => file?.size <= MAX_FILE_SIZE),
-      `Each image must be 5MB or less.`
+      (medias) =>
+        medias.every(
+          (m) => !m.file || ACCEPTED_IMAGE_TYPES.includes(m.file.type)
+        ),
+      "Invalid file type"
     )
-    .refine(
-      (files) =>
-        !files ||
-        files.every((file: any) => ACCEPTED_IMAGE_TYPES.includes(file?.type)),
-      "Only .jpg, .jpeg, .png and .webp files are accepted."
-    ),
+    .optional(),
   title: z.string().min(10, "Title must be at least 10 characters"),
   content: z.string().min(20, "Content must be at least 20 characters"),
   excerpt: z.string().min(10, "Excerpt must be at least 10 characters"),
@@ -56,8 +56,8 @@ export const blogFormSchema = z.object({
 export type CreateBlogFormData = z.infer<typeof blogFormSchema>;
 
 export const defaultValues: CreateBlogFormData = {
-  imageUrl: undefined,
-  images: undefined,
+  imageUrl: [],
+  images: [],
   title: "",
   content: "",
   excerpt: "",

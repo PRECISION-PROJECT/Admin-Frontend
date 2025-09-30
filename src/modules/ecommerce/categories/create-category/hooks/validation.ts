@@ -1,3 +1,4 @@
+import { IMedia } from "@/types";
 import { z } from "zod";
 
 const MAX_FILE_SIZE = 5000000;
@@ -10,16 +11,18 @@ const ACCEPTED_IMAGE_TYPES = [
 
 export const categoryFormSchema = z.object({
   image: z
-    .any()
-    .refine((files) => files?.length >= 1, "Image is required.")
-    .refine((files) => files?.length <= 1, "Only 1 image is allowed.")
+    .array(z.custom<IMedia>())
+    .min(1, "Image is required.")
     .refine(
-      (files) => files?.[0]?.size <= MAX_FILE_SIZE,
-      `Max file size is 5MB.`
+      (medias) => medias.every((m) => !m.file || m.file.size <= MAX_FILE_SIZE),
+      "Each file must be 5MB or less"
     )
     .refine(
-      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-      ".jpg, .jpeg, .png and .webp files are accepted."
+      (medias) =>
+        medias.every(
+          (m) => !m.file || ACCEPTED_IMAGE_TYPES.includes(m.file.type)
+        ),
+      "Invalid file type"
     ),
   name: z.string().min(3, {
     message: "Category name must be at least 3 characters.",

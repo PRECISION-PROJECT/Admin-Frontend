@@ -5,19 +5,21 @@ import {
   useGetCategoryTree,
   useUpdateCategoryMutation,
 } from "@/apis/categories";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useMemo } from "react";
-import { useForm } from "react-hook-form";
-import {
-  updateCategoryFormSchema,
-  UpdateCategoryFormData,
-  updateDefaultValues,
-} from "./validation";
 import { useUploadFileMutation } from "@/apis/uploads";
-import { useRouter } from "next/navigation";
+import { EMedia } from "@/constants/common.enum";
+import { IMedia } from "@/types";
 import { handleToastError } from "@/utils/common";
 import { ROUTES } from "@/utils/routes";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import {
+  UpdateCategoryFormData,
+  updateCategoryFormSchema,
+  updateDefaultValues,
+} from "./validation";
 
 export const useUpdateCategoryForm = (id: string) => {
   const router = useRouter();
@@ -40,7 +42,7 @@ export const useUpdateCategoryForm = (id: string) => {
   const formMethods = useForm<UpdateCategoryFormData>({
     resolver: zodResolver(updateCategoryFormSchema),
     defaultValues: updateDefaultValues,
-    mode: "onChange"
+    mode: "onChange",
   });
 
   const categoryOptions = useMemo(() => {
@@ -55,11 +57,30 @@ export const useUpdateCategoryForm = (id: string) => {
   const uploadImage = async (image: File) => {
     try {
       const res = await uploadFileMutation.mutateAsync({ file: image });
-      return res.file.path;
+      return res.file.id;
     } catch (error) {
       handleToastError(error);
-      return null;
+      return "";
     }
+  };
+
+  const generateImageUrl = async (images: IMedia[]) => {
+    const newImages = images?.filter((m) => m.file) ?? [];
+    const existingImages = images?.filter((m) => !m.file) ?? [];
+
+    let uploadedUrls: string[] = [];
+    if (newImages.length) {
+      uploadedUrls = await Promise.all(
+        newImages.map((media) => uploadImage(media.file!))
+      );
+    }
+
+    const finalImages = [
+      ...existingImages.map((m) => m.id),
+      ...uploadedUrls.filter(Boolean),
+    ];
+
+    return finalImages;
   };
 
   const onSubmit = async (data: UpdateCategoryFormData) => {
@@ -67,7 +88,8 @@ export const useUpdateCategoryForm = (id: string) => {
 
     const { image, ...rest } = data;
     try {
-      const imageUrl = !image ? rest.imageUrl : await uploadImage(image[0]);
+      const uploadedImage = await generateImageUrl(image);
+      const imageUrl = uploadedImage[0];
       if (!imageUrl) return;
 
       const updateCategoryData = {
@@ -95,6 +117,16 @@ export const useUpdateCategoryForm = (id: string) => {
       return;
     }
 
+    let existingImages: IMedia[] = [];
+    if (categoryDetail?.primaryImage) {
+      existingImages.push({
+        id: categoryDetail?.primaryImage?.id,
+        url: categoryDetail?.primaryImage?.path ?? "",
+        type: EMedia.Image,
+        file: null,
+      });
+    }
+
     formMethods.reset({
       name: categoryDetail.name,
       description: categoryDetail.description,
@@ -102,7 +134,8 @@ export const useUpdateCategoryForm = (id: string) => {
       slug: categoryDetail.slug,
       sortOrder: categoryDetail.sortOrder,
       isActive: categoryDetail.isActive ? "true" : "false",
-      imageUrl: categoryDetail.imageUrl ?? "https://placehold.co/600x400",
+      imageUrl: existingImages[0]?.url ?? "https://placehold.co/600x400",
+      image: existingImages,
     });
   }, [isLoadingCategoryDetail, JSON.stringify(categoryDetail)]);
 

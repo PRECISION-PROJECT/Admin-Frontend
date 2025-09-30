@@ -35,7 +35,7 @@ const STATUS_OPTIONS = [
   {
     value: "out_of_stock",
     label: "Out of Stock",
-  }
+  },
 ];
 
 const FEATURE_OPTIONS = [
@@ -47,11 +47,11 @@ const FEATURE_OPTIONS = [
     value: "false",
     label: "Not Featured",
   },
-]
+];
 
 type Props = {
   typeOptions: IOption<string>[];
-}
+};
 
 export const columns = ({ typeOptions }: Props): ColumnDef<IProduct>[] => [
   {
@@ -77,13 +77,13 @@ export const columns = ({ typeOptions }: Props): ColumnDef<IProduct>[] => [
     enableColumnFilter: true,
   },
   {
-    accessorKey: "imageUrl",
+    accessorKey: "primaryImage`",
     header: ({ column }: { column: Column<IProduct, unknown> }) => (
       <DataTableColumnHeader column={column} title="Image" />
     ),
     cell: ({ row }) => {
       const origin = row.original;
-      const imageUrl = origin.imageUrl;
+      const imageUrl = origin.primaryImage?.path;
       const firstName = origin.name;
       if (!imageUrl) {
         return (
@@ -166,9 +166,9 @@ export const columns = ({ typeOptions }: Props): ColumnDef<IProduct>[] => [
       const categoryId = row.original.categoryId;
       const url = ROUTES.CATEGORY_DETAIL.replace(":id", categoryId);
       return (
-          <Link href={url} className="truncate hover:underline">
-              {type}
-            </Link>
+        <Link href={url} className="truncate hover:underline">
+          {type}
+        </Link>
       );
     },
     enableColumnFilter: true,
@@ -186,14 +186,16 @@ export const columns = ({ typeOptions }: Props): ColumnDef<IProduct>[] => [
     cell: ({ row }) => {
       const keywords = row.original.keywords;
       return (
-           <Tooltip>
+        <Tooltip>
           <TooltipTrigger asChild>
             <div className="max-w-[150px] truncate cursor-help">
               {keywords.length > 0 ? keywords.join(", ") : "-"}
             </div>
           </TooltipTrigger>
           <TooltipContent>
-            <p className="max-w-[400px]">{keywords.length > 0 ? keywords.join(", ") : "-"}</p>
+            <p className="max-w-[400px]">
+              {keywords.length > 0 ? keywords.join(", ") : "-"}
+            </p>
           </TooltipContent>
         </Tooltip>
       );
@@ -260,7 +262,7 @@ export const columns = ({ typeOptions }: Props): ColumnDef<IProduct>[] => [
     },
     enableSorting: true,
   },
-  
+
   {
     id: "status",
     accessorKey: "status",
@@ -318,7 +320,9 @@ export const columns = ({ typeOptions }: Props): ColumnDef<IProduct>[] => [
         <div className="flex items-center space-x-2">
           <Icons.calendar className="h-4 w-4" />
           <span className="text-sm">
-            {updatedAt ? format(updatedAt as string, "dd/MM/yyyy HH:mm:ss") : "-"}
+            {updatedAt
+              ? format(updatedAt as string, "dd/MM/yyyy HH:mm:ss")
+              : "-"}
           </span>
         </div>
       );
@@ -326,8 +330,6 @@ export const columns = ({ typeOptions }: Props): ColumnDef<IProduct>[] => [
   },
   {
     id: "actions",
-    cell: ({ row }) => (
-      <CellAction data={row.original} />
-    ),
+    cell: ({ row }) => <CellAction data={row.original} />,
   },
 ];

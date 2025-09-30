@@ -2,18 +2,20 @@
 
 import { useGetBlogDetail, useUpdateBlogMutation } from "@/apis/blogs";
 import { useUploadFileMutation } from "@/apis/uploads";
+import { EMedia } from "@/constants/common.enum";
+import { IMedia } from "@/types";
 import { handleToastError } from "@/utils/common";
 import { ROUTES } from "@/utils/routes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import {
   blogFormSchema,
-  UpdateBlogFormData,
   defaultValues,
+  UpdateBlogFormData,
 } from "./validation";
-import { useEffect } from "react";
 
 export const useUpdateBlogForm = (id: string) => {
   const router = useRouter();
@@ -44,14 +46,33 @@ export const useUpdateBlogForm = (id: string) => {
   const uploadImage = async (image: File) => {
     try {
       const res = await uploadFileMutation.mutateAsync({ file: image });
-      return res.file.path;
+      return res.file.id;
     } catch (error) {
       throw error;
     }
   };
 
+  const generateImageUrl = async (images: IMedia[]) => {
+    const newImages = images?.filter((m) => m.file) ?? [];
+    const existingImages = images?.filter((m) => !m.file) ?? [];
+
+    let uploadedUrls: string[] = [];
+    if (newImages.length) {
+      uploadedUrls = await Promise.all(
+        newImages.map((media) => uploadImage(media.file!))
+      );
+    }
+
+    const finalImages = [
+      ...existingImages.map((m) => m.id as string),
+      ...uploadedUrls.filter(Boolean),
+    ];
+
+    return finalImages;
+  };
+
   const onSubmit = async (data: UpdateBlogFormData) => {
-    if (isPending) return;
+    if (isPending || !id) return;
 
     const {
       imageUrl,
@@ -61,16 +82,12 @@ export const useUpdateBlogForm = (id: string) => {
       ...rest
     } = data;
     try {
-      const uploadMainImage = imageUrl
-        ? await uploadImage(imageUrl[0])
-        : blogDetail?.imageUrl ?? "";
-      const uploadImages: string[] = images
-        ? await Promise.all(images?.map((image: File) => uploadImage(image)))
-        : blogDetail?.images ?? [];
+      const uploadedImage = await generateImageUrl(imageUrl!);
+      const uploadImages = await generateImageUrl(images!);
 
       const updateBlogData = {
         ...rest,
-        imageUrl: uploadMainImage,
+        imageUrl: uploadedImage[0],
         images: uploadImages,
         id,
       };
@@ -88,6 +105,27 @@ export const useUpdateBlogForm = (id: string) => {
       return formMethods.reset(defaultValues);
     }
 
+    let images = [],
+      imageUrl = [];
+    if (blogDetail.primaryImage) {
+      imageUrl.push({
+        id: blogDetail.primaryImage?.id,
+        url: blogDetail.primaryImage?.path ?? "",
+        type: EMedia.Image,
+        file: null,
+      });
+    }
+    if (blogDetail.images) {
+      images.push(
+        ...blogDetail.images.map((image) => ({
+          id: image.id,
+          url: image.path ?? "",
+          type: EMedia.Image,
+          file: null,
+        }))
+      );
+    }
+
     formMethods.reset({
       content: blogDetail.content,
       excerpt: blogDetail.excerpt,
@@ -98,12 +136,12 @@ export const useUpdateBlogForm = (id: string) => {
       keywords: blogDetail.keywords,
       sortOrder: blogDetail.sortOrder,
       isFeatured: blogDetail.isFeatured,
-      existedMainImage: blogDetail.imageUrl,
+      existedMainImage: blogDetail.primaryImage,
       existedAdditionalImages: blogDetail.images,
       title: blogDetail.title,
-      imageUrl: undefined,
-      images: undefined,
-      initialContent: blogDetail.content
+      imageUrl,
+      images,
+      initialContent: blogDetail.content,
     });
   }, [blogDetail, isLoadingBlogDetail]);
 

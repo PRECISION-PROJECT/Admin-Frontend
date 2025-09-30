@@ -1,20 +1,20 @@
 "use client";
 
 import { useAddCategoryMutation, useGetCategoryTree } from "@/apis/categories";
+import { useUploadFileMutation } from "@/apis/uploads";
+import { handleToastError } from "@/utils/common";
+import { ROUTES } from "@/utils/routes";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 import {
   categoryFormSchema,
   CreateCategoryFormData,
   defaultValues,
 } from "./validation";
-import { useUploadFileMutation } from "@/apis/uploads";
-import { useRouter } from "next/navigation";
-import { handleToastError } from "@/utils/common";
-import { ROUTES } from "@/utils/routes";
-import { toast } from "sonner";
 
 export const useCreateCategoryForm = () => {
   const router = useRouter();
@@ -45,7 +45,7 @@ export const useCreateCategoryForm = () => {
   const uploadImage = async (image: File) => {
     try {
       const res = await uploadFileMutation.mutateAsync({ file: image });
-      return res.file.path;
+      return res.file.id;
     } catch (error) {
       handleToastError(error);
       return null;
@@ -57,9 +57,8 @@ export const useCreateCategoryForm = () => {
 
     const { image, ...rest } = data;
     try {
-      const imageUrl = await uploadImage(data.image[0]);
+      const imageUrl = await uploadImage(data.image[0].file!);
       if (!imageUrl) return;
-
       const addCategoryData = {
         ...rest,
         imageUrl,

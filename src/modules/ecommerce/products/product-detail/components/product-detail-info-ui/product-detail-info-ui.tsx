@@ -33,7 +33,7 @@ const ProDetailInfoUI = ({ product }: Props) => {
               </h3>
               <p className="text-sm">{product?.name}</p>
             </div>
-            
+
             <div>
               <h3 className="font-medium text-sm text-muted-foreground mb-1">
                 Description
@@ -45,7 +45,10 @@ const ProDetailInfoUI = ({ product }: Props) => {
               <h3 className="font-medium text-sm text-muted-foreground mb-1">
                 Category
               </h3>
-              <Link href={ROUTES.CATEGORY_DETAIL.replace(":id", category?.id ?? "")} className="truncate hover:underline">
+              <Link
+                href={ROUTES.CATEGORY_DETAIL.replace(":id", category?.id ?? "")}
+                className="truncate hover:underline"
+              >
                 <p className="text-sm">{product?.category?.name ?? "-"}</p>
               </Link>
             </div>
@@ -156,22 +159,24 @@ const ProDetailInfoUI = ({ product }: Props) => {
           <div className="space-y-4">
             <div>
               <h3 className="font-medium text-sm text-muted-foreground mb-2">
-                Main Image
+                Primary Image
               </h3>
-              {product?.imageUrl ? (
+              {product?.primaryImage?.path ? (
                 <ImageZoom>
                   <ImageLoader
                     alt={product?.name}
                     className="h-auto w-32"
                     height={800}
-                    src={product?.imageUrl!}
+                    src={product?.primaryImage?.path!}
                     unoptimized
                     width={1200}
                   />
                 </ImageZoom>
               ) : (
                 <div className="w-full h-20 bg-muted rounded-md border flex items-center justify-center">
-                  <p className="text-xs text-muted-foreground">No Main Image</p>
+                  <p className="text-xs text-muted-foreground">
+                    No Primary Image
+                  </p>
                 </div>
               )}
             </div>
@@ -181,14 +186,14 @@ const ProDetailInfoUI = ({ product }: Props) => {
                 Additional Images
               </h3>
               {product?.images && product?.images.length > 0 ? (
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-2 md:grid-cols:3 lg:grid-cols-4 gap-2">
                   {product?.images.map((image, index) => (
-                    <ImageZoom key={`${index}-${image}`}>
+                    <ImageZoom key={`${index}-${image?.id}`}>
                       <ImageLoader
                         alt={`${product?.name} - Image ${index + 1}`}
                         className="h-auto w-32"
                         height={800}
-                        src={image}
+                        src={image?.path!}
                         unoptimized
                         width={1200}
                       />

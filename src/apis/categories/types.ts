@@ -1,4 +1,4 @@
-import { CommonRequestType, IPaginatedResponseType } from "@/types";
+import { CommonRequestType, IBaseImage, IPaginatedResponseType } from "@/types";
 
 export type GetCategoryListParams = {
   isActive?: string;
@@ -17,6 +17,7 @@ export interface Category {
   updatedAt: string;
   parent?: Category | null;
   children?: Category[];
+  primaryImage?: IBaseImage;
 }
 
 export type GetCategoryListResponse = IPaginatedResponseType<Category[]>;

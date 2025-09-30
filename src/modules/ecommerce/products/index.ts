@@ -3,4 +3,4 @@ export { default as ProductDetailModule } from "./product-detail";
 export { default as ProductInventoryModule } from "./product-inventory";
 export { default as ProductListModule } from "./product-list";
 export { default as ProductLowStockModule } from "./product-low-stock";
-
+export { default as UpdateProductModule } from "./update-product";
