@@ -56,7 +56,13 @@ export const productFormSchema = z.object({
   material: z.string().min(2, "Material must be at least 2 characters"),
   finish: z.string().min(2, "Finish must be at least 2 characters"),
   color: z.string().min(2, "Color must be at least 2 characters"),
-  slug: z.string().min(3, "Slug must be at least 3 characters"),
+  slug: z
+    .string()
+    .min(3, "Slug must be at least 3 characters")
+    .regex(
+      /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+      "Slug must contain only lowercase letters, numbers, and hyphens (-)"
+    ),
   metaTitle: z.string().min(10, "Meta title must be at least 10 characters"),
   metaDescription: z
     .string()

@@ -31,9 +31,15 @@ export const categoryFormSchema = z.object({
     message: "Description must be at least 20 characters.",
   }),
   parentId: z.string(),
-  slug: z.string().min(3, {
-    message: "Slug must be at least 3 characters.",
-  }),
+  slug: z
+    .string()
+    .min(3, {
+      message: "Slug must be at least 3 characters.",
+    })
+    .regex(
+      /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+      "Slug must contain only lowercase letters, numbers, and hyphens (-)"
+    ),
   sortOrder: z.number(),
   isActive: z.enum(["true", "false"]),
 });

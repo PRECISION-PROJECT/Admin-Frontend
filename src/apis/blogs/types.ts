@@ -53,8 +53,8 @@ export type CreateBlogRequest = {
   excerpt: string;
   authorId?: string;
   status: string;
-  imageUrl: string;
-  images: string[];
+  primaryImageId: string;
+  imageIds: string[];
   metaTitle: string;
   metaDescription: string;
   keywords: string[];

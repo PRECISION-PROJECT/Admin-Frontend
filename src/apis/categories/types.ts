@@ -17,7 +17,7 @@ export interface Category {
   updatedAt: string;
   parent?: Category | null;
   children?: Category[];
-  primaryImage?: IBaseImage;
+  image?: IBaseImage;
 }
 
 export type GetCategoryListResponse = IPaginatedResponseType<Category[]>;
@@ -26,7 +26,7 @@ export type AddCategoryRequest = {
   name: string;
   description: string;
   parentId: string;
-  imageUrl: string;
+  imageId: string;
   slug: string;
   sortOrder: number;
   isActive: boolean;

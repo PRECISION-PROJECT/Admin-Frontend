@@ -87,8 +87,8 @@ export const useUpdateBlogForm = (id: string) => {
 
       const updateBlogData = {
         ...rest,
-        imageUrl: uploadedImage[0],
-        images: uploadImages,
+        primaryImageId: uploadedImage[0],
+        imageIds: uploadImages,
         id,
       };
       await updateBlogMutation.mutateAsync(updateBlogData);

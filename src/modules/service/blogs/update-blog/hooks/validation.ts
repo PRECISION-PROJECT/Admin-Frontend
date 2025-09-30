@@ -45,7 +45,13 @@ export const blogFormSchema = z.object({
   content: z.string().min(20, "Content must be at least 20 characters"),
   excerpt: z.string().min(10, "Excerpt must be at least 10 characters"),
   status: z.enum(["published", "draft", "archived"]),
-  slug: z.string().min(3, "Slug must be at least 3 characters"),
+  slug: z
+    .string()
+    .min(3, "Slug must be at least 3 characters")
+    .regex(
+      /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+      "Slug must contain only lowercase letters, numbers, and hyphens (-)"
+    ),
   metaTitle: z.string().min(10, "Meta title must be at least 10 characters"),
   metaDescription: z
     .string()

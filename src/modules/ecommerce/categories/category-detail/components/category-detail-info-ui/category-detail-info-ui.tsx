@@ -76,7 +76,7 @@ const CategoryDetailInfoUI = ({ category }: Props) => {
                   alt={category?.name}
                   className="h-auto w-32"
                   height={800}
-                  src={category?.primaryImage?.path!}
+                  src={category?.image?.path!}
                   unoptimized
                   width={1200}
                 />

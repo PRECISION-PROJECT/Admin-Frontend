@@ -57,11 +57,11 @@ export const useCreateCategoryForm = () => {
 
     const { image, ...rest } = data;
     try {
-      const imageUrl = await uploadImage(data.image[0].file!);
-      if (!imageUrl) return;
+      const imageId = await uploadImage(data.image[0].file!);
+      if (!imageId) return;
       const addCategoryData = {
         ...rest,
-        imageUrl,
+        imageId,
         isActive: rest.isActive === "true" ? true : false,
       };
       await addCategoryMutation.mutateAsync(addCategoryData);

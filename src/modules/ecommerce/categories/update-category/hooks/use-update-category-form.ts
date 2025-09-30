@@ -89,12 +89,12 @@ export const useUpdateCategoryForm = (id: string) => {
     const { image, ...rest } = data;
     try {
       const uploadedImage = await generateImageUrl(image);
-      const imageUrl = uploadedImage[0];
-      if (!imageUrl) return;
+      const imageId = uploadedImage[0];
+      if (!imageId) return;
 
       const updateCategoryData = {
         ...rest,
-        imageUrl,
+        imageId,
         isActive: rest.isActive === "true" ? true : false,
         id,
       };
@@ -118,10 +118,10 @@ export const useUpdateCategoryForm = (id: string) => {
     }
 
     let existingImages: IMedia[] = [];
-    if (categoryDetail?.primaryImage) {
+    if (categoryDetail?.image) {
       existingImages.push({
-        id: categoryDetail?.primaryImage?.id,
-        url: categoryDetail?.primaryImage?.path ?? "",
+        id: categoryDetail?.image?.id,
+        url: categoryDetail?.image?.path ?? "",
         type: EMedia.Image,
         file: null,
       });

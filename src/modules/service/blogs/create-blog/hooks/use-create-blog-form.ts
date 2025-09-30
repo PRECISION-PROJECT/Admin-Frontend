@@ -64,8 +64,8 @@ export const useCreateBlogForm = () => {
 
       const addBlogData = {
         ...rest,
-        imageUrl: uploadMainImage,
-        images: uploadImages,
+        primaryImageId: uploadMainImage,
+        imageIds: uploadImages,
       };
       await addBlogMutation.mutateAsync(addBlogData);
       toast.success("Blog created successfully");
