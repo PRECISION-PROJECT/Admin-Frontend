@@ -1,7 +1,12 @@
 "use client";
 
-import { useAddCategoryMutation, useGetCategoryTree } from "@/apis/categories";
+import {
+  KEYS,
+  useAddCategoryMutation,
+  useGetCategoryTree,
+} from "@/apis/categories";
 import { useUploadFileMutation } from "@/apis/uploads";
+import { queryClient } from "@/components/providers/QueryClientProvider";
 import { handleToastError } from "@/utils/common";
 import { ROUTES } from "@/utils/routes";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -65,8 +70,14 @@ export const useCreateCategoryForm = () => {
         isActive: rest.isActive === "true" ? true : false,
       };
       await addCategoryMutation.mutateAsync(addCategoryData);
+      queryClient.invalidateQueries({
+        queryKey: [KEYS.CATEGORIES_LIST, KEYS.CATEGORIES_TREE],
+        exact: false,
+      });
       toast.success("Category created successfully");
-      router.push(ROUTES.CATEGORY_LIST);
+      setTimeout(() => {
+        router.push(ROUTES.CATEGORY_LIST);
+      }, 200);
     } catch (error) {
       handleToastError(error);
     }

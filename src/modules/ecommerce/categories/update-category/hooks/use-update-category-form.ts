@@ -1,11 +1,13 @@
 "use client";
 
 import {
+  KEYS,
   useGetCategoryDetail,
   useGetCategoryTree,
   useUpdateCategoryMutation,
 } from "@/apis/categories";
 import { useUploadFileMutation } from "@/apis/uploads";
+import { queryClient } from "@/components/providers/QueryClientProvider";
 import { EMedia } from "@/constants/common.enum";
 import { IMedia } from "@/types";
 import { handleToastError } from "@/utils/common";
@@ -99,8 +101,18 @@ export const useUpdateCategoryForm = (id: string) => {
         id,
       };
       await updateCategoryMutation.mutateAsync(updateCategoryData);
+      queryClient.invalidateQueries({
+        queryKey: [
+          KEYS.CATEGORIES_LIST,
+          KEYS.CATEGORIES_TREE,
+          KEYS.CATEGORIES_DETAIL,
+        ],
+        exact: false,
+      });
       toast.success("Category updated successfully");
-      router.push(ROUTES.CATEGORY_LIST);
+      setTimeout(() => {
+        router.push(ROUTES.CATEGORY_LIST);
+      }, 200);
     } catch (error) {
       handleToastError(error);
     }

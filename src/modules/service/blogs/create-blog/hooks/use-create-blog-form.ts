@@ -1,7 +1,8 @@
 "use client";
 
-import { useCreateBlogMutation } from "@/apis/blogs";
+import { KEYS, useCreateBlogMutation } from "@/apis/blogs";
 import { useUploadFileMutation } from "@/apis/uploads";
+import { queryClient } from "@/components/providers/QueryClientProvider";
 import { IMedia } from "@/types";
 import { handleToastError } from "@/utils/common";
 import { ROUTES } from "@/utils/routes";
@@ -68,8 +69,14 @@ export const useCreateBlogForm = () => {
         imageIds: uploadImages,
       };
       await addBlogMutation.mutateAsync(addBlogData);
+      queryClient.invalidateQueries({
+        queryKey: [KEYS.BLOG_LIST],
+        exact: false,
+      });
       toast.success("Blog created successfully");
-      router.push(ROUTES.BLOGS_LIST);
+      setTimeout(() => {
+        router.push(ROUTES.BLOGS_LIST);
+      }, 200);
     } catch (error) {
       handleToastError(error);
     }

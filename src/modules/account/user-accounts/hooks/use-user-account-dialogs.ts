@@ -1,13 +1,15 @@
 "use client";
 
-import { useUserAccount } from "../contexts/user-account-context";
+import { KEYS } from "@/apis/users";
 import {
   useActivateUserMutate,
   useDeactivateUserMutate,
+  useDeleteUserMutate,
 } from "@/apis/users/queries";
-import { useDeleteUserMutate } from "@/apis/users/queries";
+import { queryClient } from "@/components/providers/QueryClientProvider";
 import { handleToastError } from "@/utils/common";
 import { toast } from "sonner";
+import { useUserAccount } from "../contexts/user-account-context";
 
 export const useUserAccountDialogs = () => {
   const { open, currentRow, setOpen, setCurrentRow } = useUserAccount();
@@ -29,6 +31,10 @@ export const useUserAccountDialogs = () => {
     try {
       await useActivateUserMutation.mutateAsync({ id });
       toast.success("Activate user successfully");
+      queryClient.invalidateQueries({
+        queryKey: [KEYS.USER_LIST],
+        exact: false,
+      });
       onClose();
     } catch (error) {
       handleToastError(error);
@@ -39,6 +45,10 @@ export const useUserAccountDialogs = () => {
     try {
       await useDeleteUserMutation.mutateAsync({ id });
       toast.success("Delete user successfully");
+      queryClient.invalidateQueries({
+        queryKey: [KEYS.USER_LIST],
+        exact: false,
+      });
       onClose();
     } catch (error) {
       handleToastError(error);
@@ -49,6 +59,10 @@ export const useUserAccountDialogs = () => {
     try {
       await useDeactivateUserMutation.mutateAsync({ id });
       toast.success("Deactivate user successfully");
+      queryClient.invalidateQueries({
+        queryKey: [KEYS.USER_LIST],
+        exact: false,
+      });
       onClose();
     } catch (error) {
       handleToastError(error);

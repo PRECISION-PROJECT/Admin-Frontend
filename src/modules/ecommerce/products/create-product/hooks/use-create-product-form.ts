@@ -3,9 +3,11 @@
 import { useGetCategoryTree } from "@/apis/categories";
 import {
   CreateProductRequest,
+  KEYS,
   useCreateProductMutation,
 } from "@/apis/products";
 import { useUploadFileMutation } from "@/apis/uploads";
+import { queryClient } from "@/components/providers/QueryClientProvider";
 import { IMedia } from "@/types";
 import { handleToastError } from "@/utils/common";
 import { ROUTES } from "@/utils/routes";
@@ -106,6 +108,10 @@ export const useCreateProductForm = () => {
         type: memorizedCategories.groupCategoryById[rest.categoryId],
       } as CreateProductRequest;
       await addProductMutation.mutateAsync(payload);
+      queryClient.invalidateQueries({
+        queryKey: [KEYS.PRODUCTS_LIST],
+        exact: false,
+      });
       toast.success(
         "Product created successfully, redirecting to product list"
       );

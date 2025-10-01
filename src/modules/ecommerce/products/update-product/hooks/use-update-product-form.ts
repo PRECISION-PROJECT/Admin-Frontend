@@ -2,11 +2,13 @@
 
 import { useGetCategoryTree } from "@/apis/categories";
 import {
+  KEYS,
   UpdateProductRequest,
   useGetProductDetail,
   useUpdateProductMutation,
 } from "@/apis/products";
 import { useUploadFileMutation } from "@/apis/uploads";
+import { queryClient } from "@/components/providers/QueryClientProvider";
 import { EMedia } from "@/constants/common.enum";
 import { IMedia } from "@/types";
 import { handleToastError } from "@/utils/common";
@@ -125,6 +127,10 @@ export const useUpdateProductForm = ({ id }: Props) => {
         type: memorizedCategories.groupCategoryById[rest.categoryId],
       } as UpdateProductRequest;
       await updateProductMutation.mutateAsync(payload);
+      queryClient.invalidateQueries({
+        queryKey: [KEYS.PRODUCTS_LIST, KEYS.PRODUCTS_DETAIL],
+        exact: false,
+      });
       toast.success("Product update successfully, redirecting to product list");
       setTimeout(() => {
         router.push(ROUTES.PRODUCT_LIST);

@@ -1,7 +1,8 @@
 "use client";
 
-import { useGetBlogDetail, useUpdateBlogMutation } from "@/apis/blogs";
+import { KEYS, useGetBlogDetail, useUpdateBlogMutation } from "@/apis/blogs";
 import { useUploadFileMutation } from "@/apis/uploads";
+import { queryClient } from "@/components/providers/QueryClientProvider";
 import { EMedia } from "@/constants/common.enum";
 import { IMedia } from "@/types";
 import { handleToastError } from "@/utils/common";
@@ -92,8 +93,14 @@ export const useUpdateBlogForm = (id: string) => {
         id,
       };
       await updateBlogMutation.mutateAsync(updateBlogData);
+      queryClient.invalidateQueries({
+        queryKey: [KEYS.BLOG_LIST, KEYS.BLOG_DETAIL],
+        exact: false,
+      });
       toast.success("Blog updated successfully");
-      router.push(ROUTES.BLOGS_LIST);
+      setTimeout(() => {
+        router.push(ROUTES.BLOGS_LIST);
+      }, 200);
     } catch (error) {
       handleToastError(error);
     }
