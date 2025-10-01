@@ -2,10 +2,11 @@ import MainLayout from "@/components/layouts/MainLayout";
 import { fontMono, fontSans } from "@/config/fonts";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
+import { cookies } from "next/headers";
 import "../styles/globals.css";
 import Providers from "./providers";
-import { cookies } from "next/headers";
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.appUrl),
   title: siteConfig.name,
@@ -56,7 +57,6 @@ type RootLayoutProps = Readonly<{ children: React.ReactNode }>;
 
 export default async function RootLayout({ children }: RootLayoutProps) {
   const cookieStore = await cookies();
-  const activeThemeValue = cookieStore.get("active_theme")?.value;
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -69,6 +69,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         )}
       >
         <Providers>{children}</Providers>
+        <Analytics />
       </body>
     </html>
   );
