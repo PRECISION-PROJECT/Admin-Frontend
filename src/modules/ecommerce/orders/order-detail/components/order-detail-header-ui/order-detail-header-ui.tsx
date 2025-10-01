@@ -71,7 +71,7 @@ const OrderDetailHeaderUI = ({ order }: Props) => {
           </span>
           <span className="flex items-center gap-1">
             <Icons.package className="h-4 w-4" />
-            {order.products.length} items
+            {order.orderDetails?.length ?? 0} items
           </span>
         </div>
       </div>

@@ -18,8 +18,8 @@ const OrderDetailItemsUI = ({ order }: Props) => {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {order?.products.length > 0 ? (
-            order.products.map((product, index) => (
+          {order?.orderDetails?.length > 0 ? (
+            order.orderDetails.map((product, index) => (
               <div
                 key={`${product.productId}-${index}`}
                 className="flex items-center justify-between p-4 border rounded-lg"

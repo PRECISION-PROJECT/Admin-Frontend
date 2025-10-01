@@ -16,7 +16,7 @@ export interface IOrder {
   id: string;
   userId: string;
   appointmentId?: string | null;
-  products: IOrderLineItem[];
+  orderDetails: IOrderLineItem[];
   total: number;
   subtotal?: number | null;
   taxAmount?: number | null;

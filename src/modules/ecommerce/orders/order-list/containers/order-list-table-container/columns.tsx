@@ -98,15 +98,15 @@ export const columns = (
     enableColumnFilter: true,
   },
   {
-    accessorKey: "products",
+    accessorKey: "orderDetails",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Number of products" />
+      <DataTableColumnHeader column={column} title="Number of order details" />
     ),
     cell: ({ row }) => {
-      const products = row.original.products;
+      const orderDetails = row.original?.orderDetails;
       return (
         <div className="flex items-center space-x-2">
-          <span className="text-sm">{products.length}</span>
+          <span className="text-sm">{orderDetails?.length ?? 0}</span>
         </div>
       );
     },
