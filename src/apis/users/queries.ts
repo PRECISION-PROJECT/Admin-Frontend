@@ -1,13 +1,6 @@
 import { useMutation, useQuery, UseQueryOptions } from "@tanstack/react-query";
 
 import { IAxiosResponse } from "@/types/axios";
-import {
-  ActivateUserRequestParams,
-  DeactivateUserRequestParams,
-  GetUserListParams,
-  GetUserListResponse,
-  GetUserMetricResponse,
-} from "./types";
 import { KEYS } from "./keys";
 import {
   activateUser,
@@ -16,7 +9,14 @@ import {
   getUserList,
   getUserMetric,
 } from "./requests";
-import { DeleteUserRequestParams } from "./types";
+import {
+  ActivateUserRequestParams,
+  DeactivateUserRequestParams,
+  DeleteUserRequestParams,
+  GetUserListParams,
+  GetUserListResponse,
+  GetUserMetricResponse,
+} from "./types";
 
 export const useGetUserList = (
   params: GetUserListParams,

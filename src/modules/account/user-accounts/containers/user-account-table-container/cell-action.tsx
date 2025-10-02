@@ -12,15 +12,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { UsersDialogType } from "../../contexts/user-account-context";
 
-import { useRouter } from "next/navigation";
-
 interface CellActionProps {
   data: IUserResponse;
   onRowClick: (row: IUserResponse, type: UsersDialogType) => void;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data, onRowClick }) => {
-  const router = useRouter();
+  const isActive = data.status === "active";
 
   return (
     <>
@@ -34,15 +32,17 @@ export const CellAction: React.FC<CellActionProps> = ({ data, onRowClick }) => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem
-            onClick={() => router.push(`/dashboard/product/${data.id}`)}
+            onClick={() => onRowClick(data, isActive ? "un-active" : "active")}
           >
-            <Icons.edit className="mr-2 h-4 w-4" /> Update
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => onRowClick(data, "active")}>
-            <Icons.check className="mr-2 h-4 w-4" /> Active
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => onRowClick(data, "un-active")}>
-            <Icons.x className="mr-2 h-4 w-4" /> UnActive
+            {!isActive ? (
+              <>
+                <Icons.check className="mr-2 h-4 w-4" /> Active
+              </>
+            ) : (
+              <>
+                <Icons.x className="mr-2 h-4 w-4" /> Deactive
+              </>
+            )}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => onRowClick(data, "delete")}>
             <Icons.trash className="mr-2 h-4 w-4" /> Delete
