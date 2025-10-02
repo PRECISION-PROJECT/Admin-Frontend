@@ -78,6 +78,14 @@ export interface DeleteProductRequest {
   id: string;
 }
 
+export interface ActiveProductRequest {
+  id: string;
+}
+
+export interface DeactiveProductRequest {
+  id: string;
+}
+
 export type GetProductListResponse = IPaginatedResponseType<IProduct[]>;
 
 export interface GetProductListParams extends CommonRequestType {

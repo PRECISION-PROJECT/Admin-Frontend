@@ -102,11 +102,7 @@ export const useUpdateCategoryForm = (id: string) => {
       };
       await updateCategoryMutation.mutateAsync(updateCategoryData);
       queryClient.invalidateQueries({
-        queryKey: [
-          KEYS.CATEGORIES_LIST,
-          KEYS.CATEGORIES_TREE,
-          KEYS.CATEGORIES_DETAIL,
-        ],
+        queryKey: [KEYS.CATEGORIES_LIST],
         exact: false,
       });
       toast.success("Category updated successfully");

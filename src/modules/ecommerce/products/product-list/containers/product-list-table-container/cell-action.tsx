@@ -13,15 +13,18 @@ import {
 import { ROUTES } from "@/utils/routes";
 
 import { useRouter } from "next/navigation";
+import { ProductsDialogType } from "../../contexts/product-list-context";
 
 interface CellActionProps {
   data: IProduct;
+  onRowClick: (row: IProduct, type: ProductsDialogType) => void;
 }
 
-export const CellAction: React.FC<CellActionProps> = ({ data }) => {
+export const CellAction: React.FC<CellActionProps> = ({ data, onRowClick }) => {
   const router = useRouter();
   const url = ROUTES.PRODUCT_UPDATE.replace(":id", data.id);
   const detailUrl = ROUTES.PRODUCT_DETAIL.replace(":id", data.id);
+  const isActive = data.status === "active";
 
   return (
     <>
@@ -39,6 +42,19 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => router.push(url)}>
             <Icons.edit className="mr-2 h-4 w-4" /> Update
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => onRowClick(data, isActive ? "de-active" : "active")}
+          >
+            {!isActive ? (
+              <>
+                <Icons.check className="mr-2 h-4 w-4" /> Active
+              </>
+            ) : (
+              <>
+                <Icons.x className="mr-2 h-4 w-4" /> Deactive
+              </>
+            )}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

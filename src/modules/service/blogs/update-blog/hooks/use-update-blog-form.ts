@@ -94,7 +94,7 @@ export const useUpdateBlogForm = (id: string) => {
       };
       await updateBlogMutation.mutateAsync(updateBlogData);
       queryClient.invalidateQueries({
-        queryKey: [KEYS.BLOG_LIST, KEYS.BLOG_DETAIL],
+        queryKey: [KEYS.BLOG_LIST],
         exact: false,
       });
       toast.success("Blog updated successfully");

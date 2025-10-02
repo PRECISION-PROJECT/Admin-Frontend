@@ -2,7 +2,9 @@ import { IAxiosResponse } from "@/types/axios";
 import { useMutation, useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { KEYS } from "./keys";
 import {
+  activeProduct,
   createProduct,
+  deactiveProduct,
   deleteProduct,
   getProductByCategory,
   getProductDetail,
@@ -13,7 +15,9 @@ import {
   updateProduct,
 } from "./requests";
 import {
+  ActiveProductRequest,
   CreateProductRequest,
+  DeactiveProductRequest,
   DeleteProductRequest,
   GetProductListParams,
   GetProductListResponse,
@@ -105,5 +109,19 @@ export const useDeleteProductMutation = () => {
   return useMutation<IProduct, IAxiosResponse, DeleteProductRequest>({
     mutationKey: [KEYS.PRODUCTS_DETAIL],
     mutationFn: (data) => deleteProduct(data),
+  });
+};
+
+export const useActiveProductMutation = () => {
+  return useMutation<IProduct, IAxiosResponse, ActiveProductRequest>({
+    mutationKey: [KEYS.PRODUCT_ACTIVE],
+    mutationFn: (data) => activeProduct(data),
+  });
+};
+
+export const useDeactiveProductMutation = () => {
+  return useMutation<IProduct, IAxiosResponse, DeactiveProductRequest>({
+    mutationKey: [KEYS.PRODUCT_DE_ACTIVE],
+    mutationFn: (data) => deactiveProduct(data),
   });
 };

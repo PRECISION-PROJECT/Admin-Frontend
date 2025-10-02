@@ -1,13 +1,18 @@
 "use client";
 
 import { useGetCategoryTree } from "@/apis/categories";
-import { useGetProductList } from "@/apis/products";
+import { IProduct, useGetProductList } from "@/apis/products";
 import { PAGE_KEY, PER_PAGE_KEY, SORT_KEY } from "@/hooks/use-data-table";
 import { useQueryStates } from "nuqs";
 import { parseAsInteger, parseAsString } from "nuqs/server";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
+import {
+  ProductsDialogType,
+  useProductsList,
+} from "../contexts/product-list-context";
 
 export const useProductListTable = () => {
+  const { setCurrentRow, setOpen } = useProductsList();
   const [query] = useQueryStates({
     [PAGE_KEY]: parseAsInteger.withDefault(1),
     [PER_PAGE_KEY]: parseAsInteger.withDefault(10),
@@ -28,9 +33,17 @@ export const useProductListTable = () => {
     }));
   }, [categoryOptions]);
 
-  const { data, isLoading } = useGetProductList({...query, includeCategory: true}, {
-    placeholderData: (prev) => prev,
-  });
+  const { data, isLoading } = useGetProductList(
+    { ...query, includeCategory: true },
+    {
+      placeholderData: (prev) => prev,
+    }
+  );
+
+  const onRowClick = useCallback((row: IProduct, type: ProductsDialogType) => {
+    setCurrentRow(row);
+    setOpen(type);
+  }, []);
 
   const productList = data?.data ?? [];
   const pageCount = data?.totalPage ?? 0;
@@ -40,5 +53,6 @@ export const useProductListTable = () => {
     pageCount,
     isLoading,
     typeOptions,
+    onRowClick,
   };
 };

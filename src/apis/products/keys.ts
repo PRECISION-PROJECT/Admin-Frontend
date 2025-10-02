@@ -4,5 +4,7 @@ export const KEYS = {
   PRODUCT_BY_CATEGORY: "/products/category/:categoryId",
   PRODUCT_FEATURE_LIST: "/products/feature",
   PRODUCT_LIST_INVENTORY: "/admin/products/inventory",
-  PRODUCT_LIST_LOW_STOCK: "/admin/products/low-stock"
+  PRODUCT_LIST_LOW_STOCK: "/admin/products/low-stock",
+  PRODUCT_ACTIVE: "/admin/products/:id/activate",
+  PRODUCT_DE_ACTIVE: "/admin/products/:id/deactivate",
 };

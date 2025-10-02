@@ -128,7 +128,7 @@ export const useUpdateProductForm = ({ id }: Props) => {
       } as UpdateProductRequest;
       await updateProductMutation.mutateAsync(payload);
       queryClient.invalidateQueries({
-        queryKey: [KEYS.PRODUCTS_LIST, KEYS.PRODUCTS_DETAIL],
+        queryKey: [KEYS.PRODUCTS_LIST],
         exact: false,
       });
       toast.success("Product update successfully, redirecting to product list");

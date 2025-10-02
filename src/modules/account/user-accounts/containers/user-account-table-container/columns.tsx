@@ -22,6 +22,21 @@ const STATUS_OPTIONS = [
   },
 ];
 
+function getRoleBadgeVariant(role: IUserResponse["role"]) {
+  switch (role) {
+    case "SUPER_ADMIN":
+      return "destructive";
+    case "ADMIN":
+      return "default";
+    case "ADMIN_STAFF":
+      return "secondary";
+    case "USER":
+      return "outline";
+    default:
+      return "outline";
+  }
+}
+
 export const columns = (
   onRowClick: (row: IUserResponse, type: UsersDialogType) => void
 ): ColumnDef<IUserResponse>[] => [
@@ -113,7 +128,13 @@ export const columns = (
     header: ({ column }: { column: Column<IUserResponse, unknown> }) => (
       <DataTableColumnHeader column={column} title="Role" />
     ),
-    cell: ({ cell }) => <div>{cell.getValue<IUserResponse["role"]>()}</div>,
+    cell: ({ row }) => (
+      <div>
+        <Badge variant={getRoleBadgeVariant(row.original.role)}>
+          {row.original.role.replace("_", " ")}
+        </Badge>
+      </div>
+    ),
     enableColumnFilter: true,
     meta: {
       label: "Role",

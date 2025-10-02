@@ -9,9 +9,13 @@ import { useProductListTable } from "../../hooks";
 import { columns } from "./columns";
 
 const ProductListTableContainer = () => {
-  const { pageCount, productList, isLoading,typeOptions } = useProductListTable();
+  const { pageCount, productList, isLoading, typeOptions, onRowClick } =
+    useProductListTable();
 
-  const _columns = useMemo(() => columns({typeOptions}), [typeOptions]);
+  const _columns = useMemo(
+    () => columns({ typeOptions, onRowClick }),
+    [typeOptions, onRowClick]
+  );
 
   const { table } = useDataTable({
     data: productList,

@@ -17,6 +17,7 @@ import { Column, ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { CheckCircle2, XCircle } from "lucide-react";
 import Link from "next/link";
+import { ProductsDialogType } from "../../contexts/product-list-context";
 import { CellAction } from "./cell-action";
 
 const STATUS_OPTIONS = [
@@ -51,9 +52,13 @@ const FEATURE_OPTIONS = [
 
 type Props = {
   typeOptions: IOption<string>[];
+  onRowClick: (row: IProduct, type: ProductsDialogType) => void;
 };
 
-export const columns = ({ typeOptions }: Props): ColumnDef<IProduct>[] => [
+export const columns = ({
+  typeOptions,
+  onRowClick,
+}: Props): ColumnDef<IProduct>[] => [
   {
     accessorKey: "id",
     header: ({ column }) => (
@@ -330,6 +335,8 @@ export const columns = ({ typeOptions }: Props): ColumnDef<IProduct>[] => [
   },
   {
     id: "actions",
-    cell: ({ row }) => <CellAction data={row.original} />,
+    cell: ({ row }) => (
+      <CellAction data={row.original} onRowClick={onRowClick} />
+    ),
   },
 ];

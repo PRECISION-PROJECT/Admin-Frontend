@@ -1,11 +1,17 @@
 "use client";
 
-import React from "react";
+import { IProduct } from "@/apis/products";
+import React, { useState } from "react";
 
-
+export type ProductsDialogType = "active" | "de-active";
 
 interface ProductsListContextType {
+  open: ProductsDialogType | null;
+  setOpen: (str: ProductsDialogType | null) => void;
+  currentRow: IProduct | null;
+  setCurrentRow: React.Dispatch<React.SetStateAction<IProduct | null>>;
 }
+interface ProductsListContextType {}
 
 const ProductsListContext = React.createContext<ProductsListContextType | null>(
   null
@@ -16,9 +22,11 @@ interface Props {
 }
 
 export default function ProductsListProvider({ children }: Props) {
+  const [open, setOpen] = useState<ProductsDialogType | null>(null);
+  const [currentRow, setCurrentRow] = useState<IProduct | null>(null);
 
   return (
-    <ProductsListContext value={{}}>
+    <ProductsListContext value={{ open, setOpen, currentRow, setCurrentRow }}>
       {children}
     </ProductsListContext>
   );
@@ -29,7 +37,7 @@ export const useProductsList = () => {
 
   if (!productsListContext) {
     throw new Error(
-        "useProductsList has to be used within <ProductsListContext>"
+      "useProductsList has to be used within <ProductsListContext>"
     );
   }
 

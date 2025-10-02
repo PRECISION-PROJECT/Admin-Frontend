@@ -1,7 +1,9 @@
 import httpInstance from "../http-instance";
 import { KEYS } from "./keys";
 import {
+  ActiveProductRequest,
   CreateProductRequest,
+  DeactiveProductRequest,
   DeleteProductRequest,
   GetProductListParams,
   GetProductListResponse,
@@ -23,7 +25,10 @@ export const getProductListInventory = (
   signal?: AbortSignal
 ): Promise<GetProductListResponse> => {
   return httpInstance
-    .get<GetProductListResponse>(KEYS.PRODUCT_LIST_INVENTORY, { params, signal })
+    .get<GetProductListResponse>(KEYS.PRODUCT_LIST_INVENTORY, {
+      params,
+      signal,
+    })
     .then((res) => res);
 };
 
@@ -32,7 +37,10 @@ export const getProductListLowStock = (
   signal?: AbortSignal
 ): Promise<GetProductListResponse> => {
   return httpInstance
-    .get<GetProductListResponse>(KEYS.PRODUCT_LIST_LOW_STOCK, { params, signal })
+    .get<GetProductListResponse>(KEYS.PRODUCT_LIST_LOW_STOCK, {
+      params,
+      signal,
+    })
     .then((res) => res);
 };
 
@@ -90,4 +98,20 @@ export const deleteProduct = (
 ): Promise<IProduct> => {
   const url = KEYS.PRODUCTS_DETAIL.replace(":id", data.id);
   return httpInstance.delete<IProduct>(url, { signal }).then((res) => res);
+};
+
+export const activeProduct = (
+  data: ActiveProductRequest,
+  signal?: AbortSignal
+): Promise<IProduct> => {
+  const url = KEYS.PRODUCT_ACTIVE.replace(":id", data.id);
+  return httpInstance.post<IProduct>(url, { signal }).then((res) => res);
+};
+
+export const deactiveProduct = (
+  data: DeactiveProductRequest,
+  signal?: AbortSignal
+): Promise<IProduct> => {
+  const url = KEYS.PRODUCT_DE_ACTIVE.replace(":id", data.id);
+  return httpInstance.post<IProduct>(url, { signal }).then((res) => res);
 };

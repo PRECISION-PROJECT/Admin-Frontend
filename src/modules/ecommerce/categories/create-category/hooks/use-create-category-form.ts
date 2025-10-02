@@ -71,7 +71,7 @@ export const useCreateCategoryForm = () => {
       };
       await addCategoryMutation.mutateAsync(addCategoryData);
       queryClient.invalidateQueries({
-        queryKey: [KEYS.CATEGORIES_LIST, KEYS.CATEGORIES_TREE],
+        queryKey: [KEYS.CATEGORIES_LIST],
         exact: false,
       });
       toast.success("Category created successfully");
