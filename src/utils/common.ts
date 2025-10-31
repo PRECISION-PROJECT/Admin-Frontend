@@ -1,18 +1,8 @@
 import { EMedia } from "@/constants/common.enum";
 import { IMedia } from "@/types";
-import dayjs from "dayjs";
-import advancedFormat from "dayjs/plugin/advancedFormat";
-import duration from "dayjs/plugin/duration";
-import relativeTime from "dayjs/plugin/relativeTime";
-import timezone from "dayjs/plugin/timezone";
 import { toast } from "sonner";
 import { v4 as uuid } from "uuid";
 import { FILE_FORMAT, NUMBER_FORMAT_LOOK_UP } from "./const";
-
-dayjs.extend(timezone);
-dayjs.extend(relativeTime);
-dayjs.extend(duration);
-dayjs.extend(advancedFormat);
 
 export const range = (start: number, end: number) => {
   const length = end - start + 1;
@@ -89,33 +79,6 @@ export const sleep = async (time: number) => {
   );
 };
 
-export const getCountdownToTime = (
-  endTime: string | undefined,
-  format: "HH:mm" | "HH:mm:ss" = "HH:mm"
-): string => {
-  if (!endTime || !dayjs(endTime).isValid())
-    return format === "HH:mm:ss" ? "00:00:00" : "00:00";
-
-  const now = dayjs();
-  const end = dayjs(endTime);
-
-  const diff = end.diff(now);
-
-  if (diff <= 0) {
-    return format === "HH:mm:ss" ? "00:00:00" : "00:00";
-  }
-
-  const duration = dayjs.duration(diff);
-  const hours = Math.floor(duration.asHours()).toString().padStart(2, "0");
-  const minutes = duration.minutes().toString().padStart(2, "0");
-  const seconds = duration.seconds().toString().padStart(2, "0");
-
-  if (format === "HH:mm:ss") {
-    return `${hours}:${minutes}:${seconds}`;
-  }
-
-  return `${hours}:${minutes}`;
-};
 
 export function formatBytes(
   bytes: number,
