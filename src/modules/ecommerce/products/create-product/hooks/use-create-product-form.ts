@@ -12,7 +12,6 @@ import { IMedia } from "@/types";
 import { handleToastError } from "@/utils/common";
 import { ROUTES } from "@/utils/routes";
 import { zodResolver } from "@hookform/resolvers/zod";
-import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
@@ -54,16 +53,25 @@ export const useCreateProductForm = () => {
     if (!data || data.length === 0) {
       return {
         categoryOptions: [],
-        groupCategoryById: {},
+        groupCategoryById: {} as Record<string, string>,
       };
     }
 
-    const categoryOptions = data?.map((category) => ({
+    const categoryOptions = data.map((category) => ({
       value: category.id,
       label: category.name,
       disabled: false,
     }));
-    const groupCategoryById = _.mapValues(_.keyBy(data, "id"), "slug");
+
+    const groupCategoryById = data.reduce<Record<string, string>>(
+      (accumulator, category) => {
+        if (category?.id) {
+          accumulator[category.id] = category.slug ?? "";
+        }
+        return accumulator;
+      },
+      {}
+    );
     return {
       categoryOptions,
       groupCategoryById,
